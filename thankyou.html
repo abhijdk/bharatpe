@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cashback Confirmed</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      background-color: #f2f2f2;
+    }
+    #capture {
+      position: relative;
+      width: 5cm;
+      height: 11cm;
+      margin: 50px auto;
+      border-radius: 12px;
+      box-shadow: 0 0 10px #888;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 15px 10px;
+      box-sizing: border-box;
+      background: white;
+    }
+    .background-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      display: flex;
+      flex-wrap: wrap;
+      opacity: 0.2;
+      pointer-events: none;
+    }
+    .background-container img {
+      width: 50px;
+      height: 50px;
+    }
+    #content {
+      position: relative;
+      z-index: 1;
+    }
+    h1 {
+      font-size: 1.1rem;
+      color: green;
+      margin-bottom: 0.5rem;
+    }
+    h2 {
+      font-size: 0.9rem;
+      font-weight: bold;
+      margin: 0.3rem 0 0.8rem 0;
+    }
+    .details {
+      font-size: 0.85rem;
+      margin: 0.3rem 0;
+    }
+    .ref-number {
+      font-size: 0.75rem;
+      color: #444;
+      margin-bottom: 0.5rem;
+    }
+    .terms {
+      position: relative;
+      z-index: 1;
+      font-size: 0.7rem;
+      color: #555;
+      text-align: center;
+      margin-top: 10px;
+      padding-top: 5px;
+      border-top: 1px solid #ccc;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 15px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border-radius: 5px;
+      border: none;
+      background-color: #4CAF50;
+      color: white;
+      user-select: none;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="capture">
+    <div class="background-container" id="backgroundContainer"></div>
+
+    <div id="content">
+      <h1>🎉 Congratulation! You found ₹50 cashback</h1>
+      <h2>for doing 6 transactions</h2>
+
+      <div class="ref-number" id="refNumber"></div>
+      <div class="details" id="userDetails"></div>
+    </div>
+
+    <div class="terms">
+      *tc: if you don't do unique transactions, our team member will call you for doing the unique transaction, not repeated transactions.
+    </div>
+  </div>
+
+  <button id="shareBtn">Share via WhatsApp</button>
+
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <script>
+    // Create repeated UPI background
+    function createRepeatedBackground() {
+      const container = document.getElementById("backgroundContainer");
+      const imageSrc = "https://images.icon-icons.com/2699/PNG/512/upi_logo_icon_170312.png";
+      for (let i = 0; i < 100; i++) {
+        const img = document.createElement("img");
+        img.src = imageSrc;
+        container.appendChild(img);
+      }
+    }
+    createRepeatedBackground();
+
+    // Get user details from URL
+    const params = new URLSearchParams(window.location.search);
+    const name = params.get("name") || "N/A";
+    const ifsc = params.get("ifsc") || "N/A";
+    const account = params.get("account") || "N/A";
+
+    document.getElementById("userDetails").innerHTML = `
+      <p><strong>Name:</strong> ${name}</p>
+      <p><strong>IFSC:</strong> ${ifsc}</p>
+      <p><strong>Account:</strong> ${account}</p>
+    `;
+
+    // Format ref number like ddmmyyyy:hhmmss
+    function formatRefNumber() {
+      const now = new Date();
+      const day = String(now.getDate()).padStart(2, '0');
+      const month = String(now.getMonth() + 1).padStart(2, '0');
+      const year = now.getFullYear();
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      return `${day}${month}${year}:${hours}${minutes}${seconds}`;
+    }
+
+    const refText = formatRefNumber();
+    document.getElementById("refNumber").innerText = "Ref No: " + refText;
+
+    // Share image using Web Share API
+    async function shareImage() {
+      if (!navigator.canShare || !navigator.canShare({ files: [] })) {
+        alert("Your browser does not support sharing files.");
+        return;
+      }
+
+      const element = document.getElementById("capture");
+      try {
+        const canvas = await html2canvas(element, { scale: 2, useCORS: true });
+        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+        const file = new File([blob], `cashback_${refText}.png`, { type: 'image/png' });
+
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+          await navigator.share({
+            files: [file],
+            title: 'Cashback Image',
+            text: 'Here is my cashback confirmation!'
+          });
+        } else {
+          alert("Sharing files is not supported on this device/browser.");
+        }
+      } catch (error) {
+        console.error("Error sharing image:", error);
+        alert("Could not share image.");
+      }
+    }
+
+    document.getElementById("shareBtn").addEventListener("click", shareImage);
+  </script>
+</body>
+</html>

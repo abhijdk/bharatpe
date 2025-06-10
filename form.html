@@ -1,0 +1,51 @@
+<!-- form.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Enter Details</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      text-align: center;
+      padding-top: 40px;
+    }
+    form {
+      background: #fff;
+      display: inline-block;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ccc;
+    }
+    input[type="text"], input[type="submit"] {
+      display: block;
+      width: 250px;
+      padding: 10px;
+      margin: 10px auto;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Enter Your Details</h2>
+
+  <form id="cashbackForm">
+    <input type="text" id="name" placeholder="Name" required>
+    <input type="text" id="ifsc" placeholder="IFSC Code" required>
+    <input type="text" id="account" placeholder="Account Number" required>
+    <input type="submit" value="Submit">
+  </form>
+
+  <script>
+    document.getElementById('cashbackForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = encodeURIComponent(document.getElementById('name').value);
+      const ifsc = encodeURIComponent(document.getElementById('ifsc').value);
+      const account = encodeURIComponent(document.getElementById('account').value);
+      window.location.href = `thankyou.html?name=${name}&ifsc=${ifsc}&account=${account}`;
+    });
+  </script>
+
+</body>
+</html>
