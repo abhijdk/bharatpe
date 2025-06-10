@@ -154,128 +154,135 @@
 </head>
 <body>
 
-  <div id="capture">
-    <div class="background-container" id="backgroundContainer"></div>
+<div id="capture">
+  <div class="background-container" id="backgroundContainer"></div>
 
-    <div id="content">
-      <h1>🎉 Congratulation! You found ₹50 cashback</h1>
-      <h2>for doing <span id="transactionsDisplay">6</span> transactions</h2>
+  <div id="content">
+    <h1>🎉 Congratulation! You found ₹50 cashback</h1>
+    <h2>for doing <span id="transactionsDisplay">6</span> transactions</h2>
 
-      <div class="details-box">
-        <div class="ref-number" id="refNumber"></div>
-        <div class="details" id="userDetails"></div>
-      </div>
-    </div>
-
-    <div class="terms">
-      ଆମେ ଅନୁରୋଧ କରୁଛୁ ଯେ, ଯଦି ଆପଣ କ୍ୟାଶ୍‌ବ୍ୟାକ୍‌ ପାଇନାହାନ୍ତି, ତେବେ ଦୟାକରି <b>ଅଭିନ୍ନ (9437712047)</b> ଙ୍କ ସହିତ ଯୋଗାଯୋଗ କରନ୍ତୁ।<br>
-    </div>
-    <div class="terms">
-      *tc: ଆପଣ ଯଦି ସ୍ୱତନ୍ତ୍ର (unique) ଟ୍ରାଞ୍ଜାକ୍ସନ୍ ନକରିଥାଆନ୍ତି, ତେବେ ଆମର ଟିମ୍ ଆପଣଙ୍କୁ ବାକୀ ଥିବା ସ୍ୱତନ୍ତ୍ର ଟ୍ରାଞ୍ଜାକ୍ସନ୍ କରିବା ପାଇଁ ଫୋନ୍ କରିବେ ।
+    <div class="details-box">
+      <div class="ref-number" id="refNumber"></div>
+      <div class="details" id="userDetails"></div>
     </div>
   </div>
 
-  <div>
-    <button class="home-button" onclick="location.href='index.html'">Home</button>
-    <button onclick="downloadImage()">Share as Image</button>
-    <button class="print-button" onclick="window.print()">Print Page</button>
+  <div class="terms">
+    ଆମେ ଅନୁରୋଧ କରୁଛୁ ଯେ, ଯଦି ଆପଣ କ୍ୟାଶ୍‌ବ୍ୟାକ୍‌ ପାଇନାହାନ୍ତି, ତେବେ ଦୟାକରି <b>ଅଭିନ୍ନ (9437712047)</b> ଙ୍କ ସହିତ ଯୋଗାଯୋଗ କରନ୍ତୁ।<br>
   </div>
-  
-  <div id="copyright">Copyright ©️ abhinnabehuria@outlook.com</div>
+  <div class="terms">
+    *tc: ଆପଣ ଯଦି ସ୍ୱତନ୍ତ୍ର (unique) ଟ୍ରାଞ୍ଜାକ୍ସନ୍ ନକରିଥାଆନ୍ତି, ତେବେ ଆମର ଟିମ୍ ଆପଣଙ୍କୁ ବାକୀ ଥିବା ସ୍ୱତନ୍ତ୍ର ଟ୍ରାଞ୍ଜାକ୍ସନ୍ କରିବା ପାଇଁ ଫୋନ୍ କରିବେ ।
+  </div>
+</div>
 
-  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-  <script>
-    // Create repeated UPI background
-    function createRepeatedBackground() {
-      const container = document.getElementById("backgroundContainer");
-      const imageSrc = "https://images.icon-icons.com/2699/PNG/512/upi_logo_icon_170312.png";
-      const containerWidth = container.offsetWidth;
-      const containerHeight = container.offsetHeight;
-      const imgSize = 50; 
-      const numRows = Math.ceil(containerHeight / imgSize);
-      const numCols = Math.ceil(containerWidth / imgSize);
+<div>
+  <button class="home-button" onclick="location.href='index.html'">Home</button>
+  <button onclick="downloadImage()">Share as Image</button>
+  <button class="print-button" onclick="window.print()">Print Page</button>
+</div>
 
-      for (let i = 0; i < numRows * numCols; i++) {
-        const img = document.createElement("img");
-        img.src = imageSrc;
-        container.appendChild(img);
-      }
+<div id="copyright">Copyright ©️ abhinnabehuria@outlook.com</div>
+
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+<script>
+  // Create repeated UPI background
+  function createRepeatedBackground() {
+    const container = document.getElementById("backgroundContainer");
+    const imageSrc = "https://raw.githubusercontent.com/abhijdk/cashback/refs/heads/master/upilogo.png";
+    const containerWidth = container.offsetWidth;
+    const containerHeight = container.offsetHeight;
+    const imgSize = 50;
+    const numRows = Math.ceil(containerHeight / imgSize);
+    const numCols = Math.ceil(containerWidth / imgSize);
+
+    for (let i = 0; i < numRows * numCols; i++) {
+      const img = document.createElement("img");
+      img.src = imageSrc;
+      container.appendChild(img);
     }
+  }
 
-    window.onload = createRepeatedBackground;
+  window.onload = createRepeatedBackground;
 
-    // Get user details from URL
-    const params = new URLSearchParams(window.location.search);
-    const name = params.get("name");
-    const upiId = params.get("upiId");
-    const transactions = params.get("transactions");
+  // Get user details from URL
+  const params = new URLSearchParams(window.location.search);
+  const name = params.get("name");
+  const upiId = params.get("upiId");
+  const transactions = params.get("transactions");
 
-    // Display transactions count
-    if (transactions) {
-      document.getElementById("transactionsDisplay").innerText = decodeURIComponent(transactions);
+  // Display transactions count
+  if (transactions) {
+    document.getElementById("transactionsDisplay").innerText = decodeURIComponent(transactions);
+  }
+
+  // Display user details based on provided parameters for UPI
+  const userDetailsDiv = document.getElementById("userDetails");
+  let detailsHtml = '';
+
+  if (upiId && name) {
+    detailsHtml = `
+      <p><strong>Name:</strong> ${decodeURIComponent(name)}</p>
+      <p><strong>UPI ID:</strong> ${decodeURIComponent(upiId)}</p>
+    `;
+  } else {
+    detailsHtml = `<p>No UPI details provided.</p>`;
+  }
+  document.getElementById("userDetails").innerHTML = detailsHtml;
+
+  // Format ref number like ddmmyyyy:hhmmss
+  function formatRefNumber() {
+    const now = new Date();
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const year = now.getFullYear();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    return `${day}${month}${year}:${hours}${minutes}${seconds}`;
+  }
+
+  // Show ref number
+  const refText = formatRefNumber();
+  document.getElementById("refNumber").innerText = "Ref No: " + refText;
+
+  // Download image with black UPI logos (invert + brightness 0 filter applied on background container)
+  function downloadImage() {
+    const container = document.getElementById("backgroundContainer");
+    // Apply CSS filter to invert and make logos black
+    container.style.filter = "invert(1) brightness(0)";
+
+    const element = document.getElementById("capture");
+    html2canvas(element, { scale: 2, useCORS: true }).then(canvas => {
+      // Reset the filter immediately after capture
+      container.style.filter = "";
+
+      const link = document.createElement("a");
+      link.download = `cashback_${refText}.png`;
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    });
+  }
+
+  // Random color generator for copyright text
+  function getRandomColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for(let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
     }
+    return color;
+  }
 
-    // Display user details based on provided parameters for UPI
-    const userDetailsDiv = document.getElementById("userDetails");
-    let detailsHtml = '';
+  // Update copyright color every 1 second
+  function updateCopyrightColor() {
+    const copyright = document.getElementById('copyright');
+    copyright.style.color = getRandomColor();
+  }
 
-    if (upiId && name) { 
-      detailsHtml = `
-        <p><strong>Name:</strong> ${decodeURIComponent(name)}</p>
-        <p><strong>UPI ID:</strong> ${decodeURIComponent(upiId)}</p>
-      `;
-    } else {
-      detailsHtml = `<p>No UPI details provided.</p>`;
-    }
-    document.getElementById("userDetails").innerHTML = detailsHtml;
-
-    // Format ref number like ddmmyyyy:hhmmss
-    function formatRefNumber() {
-      const now = new Date();
-      const day = String(now.getDate()).padStart(2, '0');
-      const month = String(now.getMonth() + 1).padStart(2, '0');
-      const year = now.getFullYear();
-      const hours = String(now.getHours()).padStart(2, '0');
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      const seconds = String(now.getSeconds()).padStart(2, '0');
-      return `${day}${month}${year}:${hours}${minutes}${seconds}`;
-    }
-
-    // Show ref number
-    const refText = formatRefNumber();
-    document.getElementById("refNumber").innerText = "Ref No: " + refText;
-
-    // Download image
-    function downloadImage() {
-      const element = document.getElementById("capture");
-      html2canvas(element, { scale: 2, useCORS: true }).then(canvas => {
-        const link = document.createElement("a");
-        link.download = `cashback_${refText}.png`;
-        link.href = canvas.toDataURL("image/png");
-        link.click();
-      });
-    }
-
-    // Random color generator
-    function getRandomColor() {
-      const letters = '0123456789ABCDEF';
-      let color = '#';
-      for(let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-      }
-      return color;
-    }
-
-    // Update copyright color every 1 second
-    function updateCopyrightColor() {
-      const copyright = document.getElementById('copyright');
-      copyright.style.color = getRandomColor();
-    }
-
-    // Initial call and set interval
-    updateCopyrightColor();
-    setInterval(updateCopyrightColor, 1000);
-  </script>
+  // Initial call and set interval
+  updateCopyrightColor();
+  setInterval(updateCopyrightColor, 1000);
+</script>
 
 </body>
 </html>
