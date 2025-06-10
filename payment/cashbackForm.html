@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Enter Customer Details</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #484747;
+      color: white;
+      text-align: center;
+      padding-top: 40px;
+    }
+    h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      color: #a8adf9; /* Reliance Orange */
+      text-shadow: 2px 2px 5px rgba(255, 62, 0, 0.5);
+      margin-bottom: 30px;
+      font-family: 'Poppins', sans-serif;
+    }
+    #datetime {
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+    form {
+      background: black;
+      backdrop-filter: blur(10px);
+      border-radius: 10px;
+      padding: 25px;
+      display: inline-block;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+    input, select { /* Apply styles to select too */
+      width: 270px;
+      padding: 12px;
+      margin: 5px auto;
+      border: 1px solid #a8adf9; /* Added border to select and input fields */
+      border-radius: 8px;
+      background: black; /* Changed dropdown background to black */
+      color: white; /* Changed dropdown text color to white */
+      font-size: 16px;
+      text-align: center;
+    }
+    input[type="checkbox"] { /* Specific styles for checkbox */
+      width: auto;
+      margin: 0;
+      vertical-align: middle;
+      display: inline-block;
+      accent-color: #a8adf9; /* Highlight color for checkbox */
+    }
+    input::placeholder {
+      color: #DDD; /* Made placeholder brighter for visibility */
+      opacity: 0.9;
+    }
+    input[type="submit"] {
+      background: #111220;
+      cursor: pointer;
+      transition: 0.3s;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+    input[type="submit"]:hover {
+      background: #ff5277;
+    }
+    #copyright {
+      margin-top: 20px;
+      font-size: 14px;
+      opacity: 0.8;
+    }
+    /* Style to hide elements */
+    .hidden {
+      display: none;
+    }
+    /* Ensure labels and inputs inside payment fields are always block for proper stacking */
+    #upiFields label,
+    #upiFields input,
+    #accountFields label,
+    #accountFields input {
+      display: block;
+    }
+    .checkbox-group {
+        margin-top: 15px;
+        text-align: center;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Enter Customer Details</h2>
+  
+  <div id="datetime"></div>
+
+  <form id="cashbackForm">
+    <label for="paymentType">Payment Type</label>
+    <select id="paymentType" onchange="togglePaymentFields()">
+      <option value="">-- Select --</option>
+      <option value="upi">UPI</option>
+      <option value="account">Account</option>
+    </select>
+
+    <div id="upiFields" class="hidden">
+      <label for="upiName">Name</label>
+      <input type="text" id="upiName" placeholder="Enter your name">
+      <label for="upiId">UPI ID</label>
+      <input type="text" id="upiId" placeholder="Enter UPI ID">
+    </div>
+
+    <div id="accountFields" class="hidden">
+      <label for="accountName">Account Holder Name</labeL>
+      <input type="text" id="accountName" placeholder="Enter Account Holder Name">
+      <label for="ifsc">IFSC Code</label>
+      <input type="text" id="ifsc" placeholder="Enter IFSC Code">
+      <label for="accountNumber">Account Number</label>
+      <input type="text" id="accountNumber" placeholder="Enter Account Number">
+    </div>
+
+    <div class="checkbox-group">
+        <input type="checkbox" id="enableTransactions" onchange="toggleTransactionInput()">
+        <label for="enableTransactions">Customize Transactions</label>
+    </div>
+    
+    <div id="transactionFields" class="hidden">
+      <label for="numTransactions">Number of Transactions (5-10)</label>
+      <input type="number" id="numTransactions" value="6" min="5" max="10">
+    </div>
+
+    <input type="submit" value="Submit">
+  </form>
+
+  <div id="copyright">Copyright ©️ abhinnabehuria@outlook.com</div>
+
+  <script>
+    document.getElementById('cashbackForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      let queryString = '';
+      let redirectPage = '';
+      const paymentType = document.getElementById('paymentType').value;
+      
+      let numTransactionsValue;
+      if (document.getElementById('enableTransactions').checked) {
+        numTransactionsValue = document.getElementById('numTransactions').value;
+      } else {
+        numTransactionsValue = '6'; // Default to 6 if checkbox is unchecked
+      }
+      const encodedNumTransactions = encodeURIComponent(numTransactionsValue);
+
+      if (paymentType === 'upi') {
+        const name = encodeURIComponent(document.getElementById('upiName').value);
+        const upiId = encodeURIComponent(document.getElementById('upiId').value);
+        queryString = `name=${name}&upiId=${upiId}&transactions=${encodedNumTransactions}`;
+        redirectPage = 'upi.html';
+      } else if (paymentType === 'account') {
+        const name = encodeURIComponent(document.getElementById('accountName').value);
+        const ifsc = encodeURIComponent(document.getElementById('ifsc').value);
+        const account = encodeURIComponent(document.getElementById('accountNumber').value);
+        queryString = `name=${name}&ifsc=${ifsc}&account=${account}&transactions=${encodedNumTransactions}`;
+        redirectPage = 'account.html';
+      } else {
+        alert('Please select a payment type (UPI or Account).');
+        return;
+      }
+
+      window.location.href = `${redirectPage}?${queryString}`;
+    });
+
+    // Toggles the visibility of payment-related input fields
+    function togglePaymentFields() {
+      const paymentType = document.getElementById('paymentType').value;
+      const upiFields = document.getElementById('upiFields');
+      const accountFields = document.getElementById('accountFields');
+
+      // Hide all payment-related fields initially
+      upiFields.classList.add('hidden');
+      accountFields.classList.add('hidden');
+
+      // Remove required attribute from all potential fields
+      document.getElementById('upiName').removeAttribute('required');
+      document.getElementById('upiId').removeAttribute('required');
+      document.getElementById('accountName').removeAttribute('required');
+      document.getElementById('ifsc').removeAttribute('required');
+      document.getElementById('accountNumber').removeAttribute('required');
+
+      // Show relevant fields and set required attributes
+      if (paymentType === 'upi') {
+        upiFields.classList.remove('hidden');
+        document.getElementById('upiName').setAttribute('required', 'true');
+        document.getElementById('upiId').setAttribute('required', 'true');
+      } else if (paymentType === 'account') {
+        accountFields.classList.remove('hidden');
+        document.getElementById('accountName').setAttribute('required', 'true');
+        document.getElementById('ifsc').setAttribute('required', 'true');
+        document.getElementById('accountNumber').setAttribute('required', 'true');
+      }
+      // Ensure numTransactions required state is correct after payment fields toggle
+      toggleTransactionInput(); 
+    }
+
+    // Toggles the visibility and required state of the transaction input field
+    function toggleTransactionInput() {
+      const enableCheckbox = document.getElementById('enableTransactions');
+      const transactionFields = document.getElementById('transactionFields');
+      const numTransactionsInput = document.getElementById('numTransactions');
+
+      if (enableCheckbox.checked) {
+        transactionFields.classList.remove('hidden');
+        numTransactionsInput.setAttribute('required', 'true');
+      } else {
+        transactionFields.classList.add('hidden');
+        numTransactionsInput.removeAttribute('required');
+        // Reset value to default if hidden
+        numTransactionsInput.value = '6'; 
+      }
+    }
+
+    // Initial calls on page load
+    togglePaymentFields(); // Initialize payment fields based on default dropdown
+    toggleTransactionInput(); // Initialize transaction field based on default checkbox state
+
+    function updateDateTime() {
+      const now = new Date();
+      const formattedDateTime = now.toLocaleString();
+      document.getElementById('datetime').textContent = formattedDateTime;
+    }
+
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
+
+    function getRandomColor() {
+      const letters = '0123456789ABCDEF';
+      let color = '#';
+      for(let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
+
+    function updateCopyrightColor() {
+      const copyright = document.getElementById('copyright');
+      copyright.style.color = getRandomColor();
+    }
+
+    updateCopyrightColor();
+    setInterval(updateCopyrightColor, 1000);
+  </script>
+
+</body>
+</html>

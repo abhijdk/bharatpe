@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Shop Details Display</title>
+    <style>
+        body {
+          background-color: #1e1e1e;
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+          text-align: center;
+          color: white;
+        }
+
+        #capture {
+          position: relative;
+          width: 90%;
+          max-width: 400px;
+          margin: 50px auto;
+          border-radius: 12px;
+          box-shadow: 0 0 10px #888;
+          background-color: #2c2c2c;
+          padding: 20px;
+          box-sizing: border-box;
+        }
+
+        h1 {
+          font-size: 1.5rem;
+          color: #00ff99;
+          margin-bottom: 1rem;
+        }
+
+        .details-box {
+          text-align: left;
+          background-color: #000000;
+          padding: 15px;
+          border-radius: 8px;
+          border: 1px solid orange;
+          font-size: 0.95rem;
+          margin-top: 10px;
+        }
+
+        .details-box p {
+          margin: 8px 0;
+          line-height: 1.4;
+        }
+
+        .btn-group {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          margin-top: 20px;
+        }
+
+        button {
+          padding: 10px 20px;
+          font-size: 1rem;
+          cursor: pointer;
+          border-radius: 5px;
+          border: none;
+          background-color: #007bff;
+          color: white;
+          transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+          background-color: #0056b3;
+        }
+
+        #copyright {
+          font-size: 0.75rem;
+          margin-top: 15px;
+          font-weight: bold;
+          color: #888;
+        }
+    </style>
+</head>
+<body>
+
+<div id="capture">
+    <div id="content">
+        <h1>🛒 Shop Information</h1>
+        <div class="details-box" id="shopDetails">
+            <!-- Dynamic shop details will appear here -->
+        </div>
+
+        <div class="btn-group">
+            <button id="qrOfferDetailsBtn">Send QR Offer Details</button>
+            <button id="sboxOfferDetails">Send S_Box Offer Details</button>
+            <button onclick="location.href='index.html'">Home</button>
+            <button onclick="location.href='welcomeForm.html'">Welcome Form</button>
+        </div>
+    </div>
+</div>
+
+<div id="copyright">Copyright ©️ abhinnabehuria@outlook.com</div>
+
+<script>
+    const params = new URLSearchParams(window.location.search);
+    const shopName = params.get("shopName");
+    const name = params.get("name");
+    const mobile = params.get("mobile");
+    const email = params.get("email");
+
+    const shopDetailsDiv = document.getElementById("shopDetails");
+    let detailsHtml = '';
+
+    if (shopName || name || mobile || email) {
+      if (shopName) {
+        detailsHtml += `<p><strong>Shop Name:</strong> ${decodeURIComponent(shopName)}</p>`;
+      }
+      if (name) {
+        detailsHtml += `<p><strong>Owner Name:</strong> ${decodeURIComponent(name)}</p>`;
+      }
+      if (mobile) {
+        detailsHtml += `<p><strong>Mobile Number:</strong> ${decodeURIComponent(mobile)}</p>`;
+      }
+      if (email) {
+        detailsHtml += `<p><strong>Email:</strong> ${decodeURIComponent(email)}</p>`;
+      }
+    } else {
+      detailsHtml = `<p>No shop details provided.</p>`;
+    }
+
+    shopDetailsDiv.innerHTML = detailsHtml;
+
+    // Handle QR Offer Details Button
+    const qrOfferDetailsBtn = document.getElementById("qrOfferDetailsBtn");
+    if (name) {
+      const encodedName = encodeURIComponent(name);
+      qrOfferDetailsBtn.onclick = () => {
+        location.href = `offerForm/qrOfferForm.html?name=${encodedName}&shopName=${encodeURIComponent(shopName)}`;
+      };
+    }
+
+    // Handle Shop Offer Details Button
+    const sboxOfferDetails = document.getElementById("sboxOfferDetails");
+    if (shopName && name) {
+      const encodedShopName = encodeURIComponent(shopName);
+      const encodedOwnerName = encodeURIComponent(name);
+      sboxOfferDetails.onclick = () => {
+        location.href = `offerForm/sBoxOfferForm.html?shopName=${encodedShopName}&ownerName=${encodedOwnerName}`;
+      };
+    }
+
+    // Rainbow copyright effect
+    function getRandomColor() {
+      const letters = '0123456789ABCDEF';
+      let color = '#';
+      for(let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
+
+    function updateCopyrightColor() {
+      const copyright = document.getElementById('copyright');
+      copyright.style.color = getRandomColor();
+    }
+
+    updateCopyrightColor();
+    setInterval(updateCopyrightColor, 1000);
+</script>
+
+</body>
+</html>
