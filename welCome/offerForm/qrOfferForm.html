@@ -107,16 +107,18 @@
   }
 
   // On form submit, redirect to qr.html with query params
-  document.getElementById("qrForm").addEventListener("submit", function(event) {
-    event.preventDefault();
+document.getElementById("qrForm").addEventListener("submit", function(event) {
+  event.preventDefault();
 
-    const name = document.getElementById("ownerName").value;
-    const transactions = document.getElementById("transactionCount").value;
-    const amount = document.getElementById("cashbackAmount").value;
+  const name = document.getElementById("ownerName").value;
+  const transactions = document.getElementById("transactionCount").value;
+  const amount = document.getElementById("cashbackAmount").value;
 
-    const redirectUrl = `qr.html?name=${encodeURIComponent(name)}&transactions=${transactions}&amount=${amount}`;
-    window.location.href = redirectUrl;
-  });
+  // Correct the redirect URL based on your file structure
+  const redirectUrl = `file:///C:/Users/abhin/Downloads/cashback/welCome/offerForm/offerDetails/qr.html?name=${encodeURIComponent(name)}&transactions=${transactions}&amount=${amount}`;
+  window.location.href = redirectUrl;
+});
+
 </script>
 
 </body>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>QR Offer (Transaction)</title>
+    <title>Exclusive QR Offer</title>
     <style>
         body {
           font-family: Arial, sans-serif;
@@ -11,6 +11,7 @@
           text-align: center;
           background-color: #343433;
         }
+
         #capture {
           position: relative;
           width: 5.3cm;
@@ -25,6 +26,7 @@
           padding: 15px 10px;
           box-sizing: border-box;
         }
+
         .background-container {
           position: absolute;
           top: 0;
@@ -37,24 +39,32 @@
           opacity: 0.2;
           overflow: hidden;
         }
+
         .background-container img {
           width: 50px;
           height: 50px;
         }
+
         #content {
           position: relative;
           z-index: 1;
         }
+
         h1 {
-          font-size: 1.1rem;
-          color: green;
+          font-size: 1.2rem;
+          color: #ffcc00;
           margin-bottom: 0.5rem;
+          text-shadow: 1px 1px #000;
+          font-weight: bold;
         }
+
         h2 {
-          font-size: 0.9rem;
+          font-size: 0.85rem;
           font-weight: bold;
           margin: 0.3rem 0 0.8rem 0;
+          color: white;
         }
+
         .details-box {
           color: white;
           border: 1px solid orange;
@@ -66,9 +76,11 @@
           box-shadow: 0 0 3px rgba(0,0,0,0.1);
           text-align: left;
         }
+
         .details-box p {
-            margin: 5px 0;
+          margin: 5px 0;
         }
+
         .ref-number {
           font-size: 0.75rem;
           color: #444;
@@ -76,9 +88,8 @@
           font-weight: bold;
           text-align: center;
         }
+
         .terms {
-          position: relative;
-          z-index: 1;
           font-size: 0.7rem;
           color: white;
           text-align: center;
@@ -86,6 +97,7 @@
           padding-top: 5px;
           border-top: 1px solid #ccc;
         }
+
         button {
           margin-top: 20px;
           padding: 10px 15px;
@@ -93,19 +105,15 @@
           cursor: pointer;
           border-radius: 5px;
           border: none;
-          background-color: #4CAF50;
+          background-color: #007BFF;
           color: white;
           min-width: 120px;
         }
+
         button:hover {
-          background-color: #45a049;
-        }
-        .home-button {
-          background-color: #007BFF;
-        }
-        .home-button:hover {
           background-color: #0056b3;
         }
+
         #copyright {
           font-size: 0.7rem;
           margin-top: 15px;
@@ -120,8 +128,8 @@
     <div class="background-container" id="backgroundContainer"></div>
 
     <div id="content">
-        <h1>🎉 Exclusive QR Offer for You!</h1>
-        <h2 id="dynamicText">Complete <span id="transactionsDisplay">0</span> unique transactions this month to earn ₹<span id="cashbackAmountDisplay">0</span> cashback!</h2>
+        <h1>🌟 Exclusive Offer For You 🌟</h1>
+        <h2 id="offerText">Loading...</h2>
 
         <div class="details-box">
             <div class="ref-number" id="refNumber"></div>
@@ -130,18 +138,18 @@
     </div>
 
     <div class="terms">
-        ଯଦି ଆପଣ କ୍ୟାଶ୍‌ବ୍ୟାକ୍‌ ପାଇନାହାନ୍ତି, ତେବେ ଦୟାକରି <b>ଅଭିନ୍ନ (9437712047)</b> ଙ୍କ ସହିତ ଯୋଗାଯୋଗ କରନ୍ତୁ।
+        Complete your transactions to unlock this reward. For help, contact <b>Abhinna (9437712047)</b>.
     </div>
+</div>
 
-    <div>
-        <button class="home-button" onclick="location.href='index.html'">Home</button>
-    </div>
-
+<div>
+    <button onclick="redirectToHome()">Home</button>
 </div>
 
 <div id="copyright">Copyright ©️ abhinnabehuria@outlook.com</div>
 
 <script>
+    // Function to generate repeated background
     function createRepeatedBackground() {
       const container = document.getElementById("backgroundContainer");
       const imageSrc = "https://raw.githubusercontent.com/abhijdk/cashback/refs/heads/master/upilogo2.jpg";
@@ -161,42 +169,32 @@
     window.onload = createRepeatedBackground;
 
     const params = new URLSearchParams(window.location.search);
-    const name = params.get("name");
-    const transactions = params.get("transactions");
-    const cashbackAmount = params.get("cashback");
+    const name = params.get("name") || "Friend";
+    const transactions = params.get("transactions") || "6";
+    const amount = params.get("amount") || "50";
 
-    // Set dynamic text
-    if (name && transactions && cashbackAmount) {
-      document.getElementById("dynamicText").innerText = `Complete ${decodeURIComponent(transactions)} unique transactions this month to earn ₹${decodeURIComponent(cashbackAmount)} cashback!`;
-      document.getElementById("transactionsDisplay").innerText = decodeURIComponent(transactions);
-      document.getElementById("cashbackAmountDisplay").innerText = decodeURIComponent(cashbackAmount);
-    }
+    document.getElementById("offerText").innerHTML =
+      `Hi, <b>${decodeURIComponent(name)}</b>!<br>If you complete <b>${transactions}</b> unique transactions, you will receive ₹<b>${amount}</b> cashback.`;
 
-    const userDetailsDiv = document.getElementById("userDetails");
-    let detailsHtml = '';
-
-    if (name) {
-      detailsHtml = `<p><strong>Name:</strong> ${decodeURIComponent(name)}</p>`;
-    } else {
-      detailsHtml = `<p>No user details provided.</p>`;
-    }
-
-    document.getElementById("userDetails").innerHTML = detailsHtml;
-
-    function formatRefNumber() {
+    // Generate a unique reference number based on the current date and the name
+    function generateRefNumber(name) {
       const now = new Date();
-      const day = String(now.getDate()).padStart(2, '0');
-      const month = String(now.getMonth() + 1).padStart(2, '0');
-      const year = now.getFullYear();
-      const hours = String(now.getHours()).padStart(2, '0');
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      const seconds = String(now.getSeconds()).padStart(2, '0');
-      return `${day}${month}${year}:${hours}${minutes}${seconds}`;
+      const dd = String(now.getDate()).padStart(2, '0');
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      const yy = String(now.getFullYear()).slice(2);
+      const hh = String(now.getHours()).padStart(2, '0');
+      const min = String(now.getMinutes()).padStart(2, '0');
+      const first5 = name.replace(/\s+/g, '').substring(0, 5).toUpperCase();
+      return `${first5}${dd}${mm}${yy}${hh}${min}`;
     }
 
-    const refText = formatRefNumber();
-    document.getElementById("refNumber").innerText = "Ref No: " + refText;
+    const refNumber = generateRefNumber(name);
+    document.getElementById("refNumber").innerText = "Ref No: " + refNumber;
 
+    // Optional user name display
+    document.getElementById("userDetails").innerHTML = `<p><strong>Name:</strong> ${decodeURIComponent(name)}</p>`;
+
+    // Rainbow copyright effect
     function getRandomColor() {
       const letters = '0123456789ABCDEF';
       let color = '#';
@@ -207,12 +205,19 @@
     }
 
     function updateCopyrightColor() {
-      const copyright = document.getElementById('copyright');
-      copyright.style.color = getRandomColor();
+      document.getElementById('copyright').style.color = getRandomColor();
     }
 
     updateCopyrightColor();
     setInterval(updateCopyrightColor, 1000);
+
+    // Dynamic Redirect to Home Page
+    function redirectToHome() {
+      // The base URL can be dynamically detected or hardcoded if required.
+      const baseUrl = window.location.origin;  // This automatically gets the base URL.
+      const homeUrl = `${baseUrl}/index.html`;  // Adjust 'index.html' to your root page path
+      window.location.href = homeUrl;
+    }
 </script>
 
 </body>
