@@ -1,41 +1,98 @@
-<!-- form.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Enter Details</title>
+  <title>Enter Customer Details</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f2f2f2;
+      font-family: 'Poppins', sans-serif;
+      background: #484747 ;
+      color: white;
       text-align: center;
       padding-top: 40px;
     }
-    form {
-      background: #fff;
-      display: inline-block;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px #ccc;
+   h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  color: #a8adf9; /* Reliance Orange */
+  text-shadow: 2px 2px 5px rgba(255, 62, 0, 0.5);
+  margin-bottom: 30px;
+  font-family: 'Poppins', sans-serif;
+}
+
+    #datetime {
+      font-size: 16px;
+      margin-bottom: 20px;
     }
-    input[type="text"], input[type="submit"] {
+    form {
+      background: black;
+      backdrop-filter: blur(10px);
+      border-radius: 10px;
+      padding: 25px;
+      display: inline-block;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+    label {
       display: block;
-      width: 250px;
-      padding: 10px;
-      margin: 10px auto;
+      margin-top: 15px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+    input {
+      width: 270px;
+      padding: 12px;
+      margin: 5px auto;
+      border: none;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      font-size: 16px;
+      text-align: center;
+    }
+    input::placeholder {
+      color: white;
+      opacity: 0.7;
+    }
+    input[type="submit"] {
+      background: #111220;
+      cursor: pointer;
+      transition: 0.3s;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+    input[type="submit"]:hover {
+      background: #ff5277;
+    }
+    #copyright {
+      margin-top: 20px;
+      font-size: 14px;
+      opacity: 0.8;
+      /* color will be set dynamically by JS */
     }
   </style>
 </head>
 <body>
 
-  <h2>Enter Your Details</h2>
+  <h2>Enter Customer Details</h2>
+  
+  <div id="datetime"></div>
 
   <form id="cashbackForm">
-    <input type="text" id="name" placeholder="Name" required>
-    <input type="text" id="ifsc" placeholder="IFSC Code" required>
-    <input type="text" id="account" placeholder="Account Number" required>
+    <label for="name">Name</label>
+    <input type="text" id="name" placeholder="Enter your name" required>
+
+    <label for="ifsc">IFSC Code</label>
+    <input type="text" id="ifsc" placeholder="Enter IFSC Code" required>
+
+    <label for="account">Account Number</label>
+    <input type="text" id="account" placeholder="Enter Account Number" required><br>
+
     <input type="submit" value="Submit">
   </form>
+
+  <div id="copyright">Copyright ©️ abhinnabehuria@outlook.com</div>
 
   <script>
     document.getElementById('cashbackForm').addEventListener('submit', function(e) {
@@ -45,6 +102,34 @@
       const account = encodeURIComponent(document.getElementById('account').value);
       window.location.href = `thankyou.html?name=${name}&ifsc=${ifsc}&account=${account}`;
     });
+
+    function updateDateTime() {
+      const now = new Date();
+      const formattedDateTime = now.toLocaleString();
+      document.getElementById('datetime').textContent = formattedDateTime;
+    }
+
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
+
+    // Function to generate a random color in hex format
+    function getRandomColor() {
+      const letters = '0123456789ABCDEF';
+      let color = '#';
+      for(let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
+
+    // Function to update copyright color every second
+    function updateCopyrightColor() {
+      const copyright = document.getElementById('copyright');
+      copyright.style.color = getRandomColor();
+    }
+
+    updateCopyrightColor();
+    setInterval(updateCopyrightColor, 1000);
   </script>
 
 </body>

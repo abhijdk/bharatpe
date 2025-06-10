@@ -9,7 +9,7 @@
       margin: 0;
       padding: 0;
       text-align: center;
-      background-color: #f2f2f2;
+      background-color: #343433;
     }
     #capture {
       position: relative;
@@ -54,14 +54,21 @@
       font-weight: bold;
       margin: 0.3rem 0 0.8rem 0;
     }
-    .details {
-      font-size: 0.85rem;
-      margin: 0.3rem 0;
+    .details-box {
+color: white;
+      border: 1px solid orange;
+      border-radius: 8px;
+      padding: 10px;
+      margin-top: 8px;
+      font-size: 0.8rem;
+      background-color: #000000;
+      box-shadow: 	0 0 3px rgba(0,0,0,0.1);
     }
     .ref-number {
       font-size: 0.75rem;
       color: #444;
       margin-bottom: 0.5rem;
+      font-weight: bold;
     }
     .terms {
       position: relative;
@@ -86,6 +93,13 @@
     button:hover {
       background-color: #45a049;
     }
+    /* New copyright styles */
+    #copyright {
+      font-size: 0.7rem;
+      margin-top: 15px;
+      color: #666;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -97,16 +111,22 @@
       <h1>🎉 Congratulation! You found ₹50 cashback</h1>
       <h2>for doing 6 transactions</h2>
 
-      <div class="ref-number" id="refNumber"></div>
-      <div class="details" id="userDetails"></div>
+      <div class="details-box">
+        <div class="ref-number" id="refNumber"></div>
+        <div class="details" id="userDetails"></div>
+      </div>
     </div>
 
     <div class="terms">
       *tc: if you don't do unique transactions, our team member will call you for doing the unique transaction, not repeated transactions.
     </div>
+
+
   </div>
 
   <button onclick="downloadImage()">Share as Image</button>
+    <!-- Added copyright -->
+    <div id="copyright">Copyright ©️ abhinnabehuria@outlook.com</div>
 
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
   <script>
@@ -157,11 +177,31 @@
       const element = document.getElementById("capture");
       html2canvas(element, { scale: 2, useCORS: true }).then(canvas => {
         const link = document.createElement("a");
-        link.download = `cashback_${refText}.png`; // also use ref number in filename
+        link.download = `cashback_${refText}.png`;
         link.href = canvas.toDataURL("image/png");
         link.click();
       });
     }
+
+    // Random color generator
+    function getRandomColor() {
+      const letters = '0123456789ABCDEF';
+      let color = '#';
+      for(let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
+
+    // Update copyright color every 1 second
+    function updateCopyrightColor() {
+      const copyright = document.getElementById('copyright');
+      copyright.style.color = getRandomColor();
+    }
+
+    // Initial call and set interval
+    updateCopyrightColor();
+    setInterval(updateCopyrightColor, 1000);
   </script>
 
 </body>
