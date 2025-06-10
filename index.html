@@ -6,22 +6,21 @@
   <style>
     body {
       font-family: 'Poppins', sans-serif;
-      background: #484747 ;
+      background: #484747;
       color: white;
       text-align: center;
       padding-top: 40px;
     }
-   h2 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 4px;
-  color: #a8adf9; /* Reliance Orange */
-  text-shadow: 2px 2px 5px rgba(255, 62, 0, 0.5);
-  margin-bottom: 30px;
-  font-family: 'Poppins', sans-serif;
-}
-
+    h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      color: #a8adf9; /* Reliance Orange */
+      text-shadow: 2px 2px 5px rgba(255, 62, 0, 0.5);
+      margin-bottom: 30px;
+      font-family: 'Poppins', sans-serif;
+    }
     #datetime {
       font-size: 16px;
       margin-bottom: 20px;
@@ -40,20 +39,20 @@
       font-size: 16px;
       font-weight: bold;
     }
-    input {
+    input, select { /* Apply styles to select too */
       width: 270px;
       padding: 12px;
       margin: 5px auto;
-      border: none;
+      border: 1px solid #a8adf9; /* Added border to select and input fields */
       border-radius: 8px;
-      background: rgba(255, 255, 255, 0.2);
-      color: white;
+      background: black; /* Changed dropdown background to black */
+      color: white; /* Changed dropdown text color to white */
       font-size: 16px;
       text-align: center;
     }
     input::placeholder {
-      color: white;
-      opacity: 0.7;
+      color: #DDD; /* Made placeholder brighter for visibility */
+      opacity: 0.9;
     }
     input[type="submit"] {
       background: #111220;
@@ -69,7 +68,17 @@
       margin-top: 20px;
       font-size: 14px;
       opacity: 0.8;
-      /* color will be set dynamically by JS */
+    }
+    /* Style to hide elements */
+    .hidden {
+      display: none;
+    }
+    /* Ensure labels and inputs inside payment fields are always block for proper stacking */
+    #upiFields label,
+    #upiFields input,
+    #accountFields label,
+    #accountFields input {
+      display: block;
     }
   </style>
 </head>
@@ -80,14 +89,28 @@
   <div id="datetime"></div>
 
   <form id="cashbackForm">
-    <label for="name">Name</label>
-    <input type="text" id="name" placeholder="Enter your name" required>
+    <label for="paymentType">Payment Type</label>
+    <select id="paymentType" onchange="togglePaymentFields()">
+      <option value="">-- Select --</option>
+      <option value="upi">UPI</option>
+      <option value="account">Account</option>
+    </select>
 
-    <label for="ifsc">IFSC Code</label>
-    <input type="text" id="ifsc" placeholder="Enter IFSC Code" required>
+    <div id="upiFields" class="hidden">
+      <label for="upiName">Name</label>
+      <input type="text" id="upiName" placeholder="Enter your name">
+      <label for="upiId">UPI ID</label>
+      <input type="text" id="upiId" placeholder="Enter UPI ID">
+    </div>
 
-    <label for="account">Account Number</label>
-    <input type="text" id="account" placeholder="Enter Account Number" required><br>
+    <div id="accountFields" class="hidden">
+      <label for="accountName">Account Holder Name</label>
+      <input type="text" id="accountName" placeholder="Enter Account Holder Name">
+      <label for="ifsc">IFSC Code</label>
+      <input type="text" id="ifsc" placeholder="Enter IFSC Code">
+      <label for="accountNumber">Account Number</label>
+      <input type="text" id="accountNumber" placeholder="Enter Account Number">
+    </div>
 
     <input type="submit" value="Submit">
   </form>
@@ -97,11 +120,57 @@
   <script>
     document.getElementById('cashbackForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      const name = encodeURIComponent(document.getElementById('name').value);
-      const ifsc = encodeURIComponent(document.getElementById('ifsc').value);
-      const account = encodeURIComponent(document.getElementById('account').value);
-      window.location.href = `thankyou.html?name=${name}&ifsc=${ifsc}&account=${account}`;
+
+      let queryString = '';
+      let redirectPage = '';
+      const paymentType = document.getElementById('paymentType').value;
+
+      if (paymentType === 'upi') {
+        const name = encodeURIComponent(document.getElementById('upiName').value);
+        const upiId = encodeURIComponent(document.getElementById('upiId').value);
+        queryString = `name=${name}&upiId=${upiId}`;
+        redirectPage = 'thankyouupi.html';
+      } else if (paymentType === 'account') {
+        const name = encodeURIComponent(document.getElementById('accountName').value);
+        const ifsc = encodeURIComponent(document.getElementById('ifsc').value);
+        const account = encodeURIComponent(document.getElementById('accountNumber').value);
+        queryString = `name=${name}&ifsc=${ifsc}&account=${account}`;
+        redirectPage = 'thankyou.html';
+      } else {
+        alert('Please select a payment type (UPI or Account).');
+        return;
+      }
+
+      window.location.href = `${redirectPage}?${queryString}`;
     });
+
+    function togglePaymentFields() {
+      const paymentType = document.getElementById('paymentType').value;
+      const upiFields = document.getElementById('upiFields');
+      const accountFields = document.getElementById('accountFields');
+
+      upiFields.classList.add('hidden');
+      accountFields.classList.add('hidden');
+
+      document.getElementById('upiName').removeAttribute('required');
+      document.getElementById('upiId').removeAttribute('required');
+      document.getElementById('accountName').removeAttribute('required');
+      document.getElementById('ifsc').removeAttribute('required');
+      document.getElementById('accountNumber').removeAttribute('required');
+
+      if (paymentType === 'upi') {
+        upiFields.classList.remove('hidden');
+        document.getElementById('upiName').setAttribute('required', 'true');
+        document.getElementById('upiId').setAttribute('required', 'true');
+      } else if (paymentType === 'account') {
+        accountFields.classList.remove('hidden');
+        document.getElementById('accountName').setAttribute('required', 'true');
+        document.getElementById('ifsc').setAttribute('required', 'true');
+        document.getElementById('accountNumber').setAttribute('required', 'true');
+      }
+    }
+
+    togglePaymentFields();
 
     function updateDateTime() {
       const now = new Date();
@@ -112,7 +181,6 @@
     updateDateTime();
     setInterval(updateDateTime, 1000);
 
-    // Function to generate a random color in hex format
     function getRandomColor() {
       const letters = '0123456789ABCDEF';
       let color = '#';
@@ -122,7 +190,6 @@
       return color;
     }
 
-    // Function to update copyright color every second
     function updateCopyrightColor() {
       const copyright = document.getElementById('copyright');
       copyright.style.color = getRandomColor();
