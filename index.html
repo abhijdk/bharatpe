@@ -163,13 +163,13 @@
         const name = encodeURIComponent(document.getElementById('upiName').value);
         const upiId = encodeURIComponent(document.getElementById('upiId').value);
         queryString = `name=${name}&upiId=${upiId}&transactions=${encodedNumTransactions}`;
-        redirectPage = 'thankyouupi.html';
+        redirectPage = 'upi.html';
       } else if (paymentType === 'account') {
         const name = encodeURIComponent(document.getElementById('accountName').value);
         const ifsc = encodeURIComponent(document.getElementById('ifsc').value);
         const account = encodeURIComponent(document.getElementById('accountNumber').value);
         queryString = `name=${name}&ifsc=${ifsc}&account=${account}&transactions=${encodedNumTransactions}`;
-        redirectPage = 'thankyou.html';
+        redirectPage = 'account.html';
       } else {
         alert('Please select a payment type (UPI or Account).');
         return;

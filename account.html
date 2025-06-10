@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Cashback Confirmed (UPI)</title>
+  <title>Cashback Confirmed (Account)</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -13,8 +13,8 @@
     }
     #capture {
       position: relative;
-      width: 5cm;
-      height: 11cm;
+      width: 6cm;
+      height: 12.5cm;
       margin: 50px auto;
       border-radius: 12px;
       box-shadow: 0 0 10px #888;
@@ -35,7 +35,7 @@
       display: flex;
       flex-wrap: wrap;
       opacity: 0.2;
-      overflow: hidden; /* Ensure background images stay within bounds */
+      overflow: hidden; 
     }
     .background-container img {
       width: 50px;
@@ -64,17 +64,17 @@
       font-size: 0.8rem;
       background-color: #000000;
       box-shadow: 0 0 3px rgba(0,0,0,0.1);
-      text-align: left; /* Align text left inside the box */
+      text-align: left; 
     }
     .details-box p {
-        margin: 5px 0; /* Add some spacing for paragraphs */
+        margin: 5px 0; 
     }
     .ref-number {
       font-size: 0.75rem;
       color: #444;
       margin-bottom: 0.5rem;
       font-weight: bold;
-      text-align: center; /* Center the ref number */
+      text-align: center; 
     }
     .terms {
       position: relative;
@@ -168,7 +168,10 @@
     </div>
 
     <div class="terms">
-      *tc: if you don't do unique transactions, our team member will call you for doing the unique transaction, not repeated transactions.
+      ଆମେ ଅନୁରୋଧ କରୁଛୁ ଯେ, ଯଦି ଆପଣ କ୍ୟାଶ୍‌ବ୍ୟାକ୍‌ ପାଇନାହାନ୍ତି, ତେବେ ଦୟାକରି <b>ଅଭିନ୍ନ (9437712047)</b> ଙ୍କ ସହିତ ଯୋଗାଯୋଗ କରନ୍ତୁ।<br>
+    </div>
+    <div class="terms">
+      *tc: ଆପଣ ଯଦି ସ୍ୱତନ୍ତ୍ର (unique) ଟ୍ରାଞ୍ଜାକ୍ସନ୍ ନକରିଥାଆନ୍ତି, ତେବେ ଆମର ଟିମ୍ ଆପଣଙ୍କୁ ବାକୀ ଥିବା ସ୍ୱତନ୍ତ୍ର ଟ୍ରାଞ୍ଜାକ୍ସନ୍ କରିବା ପାଇଁ ଫୋନ୍ କରିବେ ।
     </div>
   </div>
 
@@ -177,12 +180,11 @@
     <button onclick="downloadImage()">Share as Image</button>
     <button class="print-button" onclick="window.print()">Print Page</button>
   </div>
-  
+
   <div id="copyright">Copyright ©️ abhinnabehuria@outlook.com</div>
 
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
   <script>
-    // Create repeated UPI background
     function createRepeatedBackground() {
       const container = document.getElementById("backgroundContainer");
       const imageSrc = "https://images.icon-icons.com/2699/PNG/512/upi_logo_icon_170312.png";
@@ -201,32 +203,30 @@
 
     window.onload = createRepeatedBackground;
 
-    // Get user details from URL
     const params = new URLSearchParams(window.location.search);
     const name = params.get("name");
-    const upiId = params.get("upiId");
+    const ifsc = params.get("ifsc");
+    const account = params.get("account");
     const transactions = params.get("transactions");
 
-    // Display transactions count
     if (transactions) {
       document.getElementById("transactionsDisplay").innerText = decodeURIComponent(transactions);
     }
 
-    // Display user details based on provided parameters for UPI
     const userDetailsDiv = document.getElementById("userDetails");
     let detailsHtml = '';
 
-    if (upiId && name) { 
+    if (ifsc && account && name) {
       detailsHtml = `
         <p><strong>Name:</strong> ${decodeURIComponent(name)}</p>
-        <p><strong>UPI ID:</strong> ${decodeURIComponent(upiId)}</p>
+        <p><strong>IFSC:</strong> ${decodeURIComponent(ifsc)}</p>
+        <p><strong>Account:</strong> ${decodeURIComponent(account)}</p>
       `;
     } else {
-      detailsHtml = `<p>No UPI details provided.</p>`;
+      detailsHtml = `<p>No account details provided.</p>`;
     }
     document.getElementById("userDetails").innerHTML = detailsHtml;
 
-    // Format ref number like ddmmyyyy:hhmmss
     function formatRefNumber() {
       const now = new Date();
       const day = String(now.getDate()).padStart(2, '0');
@@ -238,11 +238,9 @@
       return `${day}${month}${year}:${hours}${minutes}${seconds}`;
     }
 
-    // Show ref number
     const refText = formatRefNumber();
     document.getElementById("refNumber").innerText = "Ref No: " + refText;
 
-    // Download image
     function downloadImage() {
       const element = document.getElementById("capture");
       html2canvas(element, { scale: 2, useCORS: true }).then(canvas => {
@@ -253,7 +251,6 @@
       });
     }
 
-    // Random color generator
     function getRandomColor() {
       const letters = '0123456789ABCDEF';
       let color = '#';
@@ -263,13 +260,11 @@
       return color;
     }
 
-    // Update copyright color every 1 second
     function updateCopyrightColor() {
       const copyright = document.getElementById('copyright');
       copyright.style.color = getRandomColor();
     }
 
-    // Initial call and set interval
     updateCopyrightColor();
     setInterval(updateCopyrightColor, 1000);
   </script>
