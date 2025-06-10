@@ -24,7 +24,6 @@
       justify-content: space-between;
       padding: 15px 10px;
       box-sizing: border-box;
-      background: white;
     }
     .background-container {
       position: absolute;
@@ -36,7 +35,6 @@
       display: flex;
       flex-wrap: wrap;
       opacity: 0.2;
-      pointer-events: none;
     }
     .background-container img {
       width: 50px;
@@ -84,7 +82,6 @@
       border: none;
       background-color: #4CAF50;
       color: white;
-      user-select: none;
     }
     button:hover {
       background-color: #45a049;
@@ -109,7 +106,7 @@
     </div>
   </div>
 
-  <button id="shareBtn">Share via WhatsApp</button>
+  <button onclick="downloadImage()">Share as Image</button>
 
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
   <script>
@@ -123,6 +120,7 @@
         container.appendChild(img);
       }
     }
+
     createRepeatedBackground();
 
     // Get user details from URL
@@ -131,6 +129,7 @@
     const ifsc = params.get("ifsc") || "N/A";
     const account = params.get("account") || "N/A";
 
+    // Display user details
     document.getElementById("userDetails").innerHTML = `
       <p><strong>Name:</strong> ${name}</p>
       <p><strong>IFSC:</strong> ${ifsc}</p>
@@ -149,38 +148,21 @@
       return `${day}${month}${year}:${hours}${minutes}${seconds}`;
     }
 
+    // Show ref number
     const refText = formatRefNumber();
     document.getElementById("refNumber").innerText = "Ref No: " + refText;
 
-    // Share image using Web Share API
-    async function shareImage() {
-      if (!navigator.canShare || !navigator.canShare({ files: [] })) {
-        alert("Your browser does not support sharing files.");
-        return;
-      }
-
+    // Download image
+    function downloadImage() {
       const element = document.getElementById("capture");
-      try {
-        const canvas = await html2canvas(element, { scale: 2, useCORS: true });
-        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
-        const file = new File([blob], `cashback_${refText}.png`, { type: 'image/png' });
-
-        if (navigator.canShare && navigator.canShare({ files: [file] })) {
-          await navigator.share({
-            files: [file],
-            title: 'Cashback Image',
-            text: 'Here is my cashback confirmation!'
-          });
-        } else {
-          alert("Sharing files is not supported on this device/browser.");
-        }
-      } catch (error) {
-        console.error("Error sharing image:", error);
-        alert("Could not share image.");
-      }
+      html2canvas(element, { scale: 2, useCORS: true }).then(canvas => {
+        const link = document.createElement("a");
+        link.download = `cashback_${refText}.png`; // also use ref number in filename
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      });
     }
-
-    document.getElementById("shareBtn").addEventListener("click", shareImage);
   </script>
+
 </body>
 </html>
