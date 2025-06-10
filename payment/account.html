@@ -3,7 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <title>Cashback Confirmed (Account)</title>
-  <style>
+  <style>.home-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
     body {
       font-family: Arial, sans-serif;
       margin: 0;
@@ -139,7 +147,7 @@
 
 <div>
   <!-- ✅ Corrected path to index.html from qr.html -->
-  <button class="home-button" onclick="location.href='cashback/index.html'">Home</button>
+  <a href="/" class="home-button">Home</a>
 </div>
 
 <div id="copyright">Copyright ©️ abhinnabehuria@outlook.com</div>
@@ -147,7 +155,7 @@
 <script>
   function createRepeatedBackground() {
     const container = document.getElementById("backgroundContainer");
-    const imageSrc = "https://raw.githubusercontent.com/abhijdk/cashback/refs/heads/master/upilogo2.jpg";
+    const imageSrc = "https://raw.githubusercontent.com/abhijdk/cashback/refs/heads/master/image/upilogo2.jpg";
     const containerWidth = container.offsetWidth;
     const containerHeight = container.offsetHeight;
     const imgSize = 50;
