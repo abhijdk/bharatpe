@@ -124,7 +124,7 @@
 
     <div id="content">
       <h1>🎉 Congratulation! You found ₹50 cashback</h1>
-      <h2>for doing 6 transactions</h2>
+      <h2>for doing <span id="transactionsDisplay">6</span> transactions</h2> <!-- Updated to display transactions -->
 
       <div class="details-box">
         <div class="ref-number" id="refNumber"></div>
@@ -168,6 +168,12 @@
     const name = params.get("name");
     const ifsc = params.get("ifsc");
     const account = params.get("account");
+    const transactions = params.get("transactions"); // Get transactions
+
+    // Display transactions count
+    if (transactions) {
+      document.getElementById("transactionsDisplay").innerText = decodeURIComponent(transactions);
+    }
 
     const userDetailsDiv = document.getElementById("userDetails");
     let detailsHtml = '';

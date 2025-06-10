@@ -50,6 +50,13 @@
       font-size: 16px;
       text-align: center;
     }
+    input[type="checkbox"] { /* Specific styles for checkbox */
+      width: auto;
+      margin: 0;
+      vertical-align: middle;
+      display: inline-block;
+      accent-color: #a8adf9; /* Highlight color for checkbox */
+    }
     input::placeholder {
       color: #DDD; /* Made placeholder brighter for visibility */
       opacity: 0.9;
@@ -80,6 +87,15 @@
     #accountFields input {
       display: block;
     }
+    .checkbox-group {
+        margin-top: 15px;
+        text-align: center;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
   </style>
 </head>
 <body>
@@ -104,12 +120,22 @@
     </div>
 
     <div id="accountFields" class="hidden">
-      <label for="accountName">Account Holder Name</label>
+      <label for="accountName">Account Holder Name</labeL>
       <input type="text" id="accountName" placeholder="Enter Account Holder Name">
       <label for="ifsc">IFSC Code</label>
       <input type="text" id="ifsc" placeholder="Enter IFSC Code">
       <label for="accountNumber">Account Number</label>
       <input type="text" id="accountNumber" placeholder="Enter Account Number">
+    </div>
+
+    <div class="checkbox-group">
+        <input type="checkbox" id="enableTransactions" onchange="toggleTransactionInput()">
+        <label for="enableTransactions">Customize Transactions</label>
+    </div>
+    
+    <div id="transactionFields" class="hidden">
+      <label for="numTransactions">Number of Transactions (5-10)</label>
+      <input type="number" id="numTransactions" value="6" min="5" max="10">
     </div>
 
     <input type="submit" value="Submit">
@@ -124,17 +150,25 @@
       let queryString = '';
       let redirectPage = '';
       const paymentType = document.getElementById('paymentType').value;
+      
+      let numTransactionsValue;
+      if (document.getElementById('enableTransactions').checked) {
+        numTransactionsValue = document.getElementById('numTransactions').value;
+      } else {
+        numTransactionsValue = '6'; // Default to 6 if checkbox is unchecked
+      }
+      const encodedNumTransactions = encodeURIComponent(numTransactionsValue);
 
       if (paymentType === 'upi') {
         const name = encodeURIComponent(document.getElementById('upiName').value);
         const upiId = encodeURIComponent(document.getElementById('upiId').value);
-        queryString = `name=${name}&upiId=${upiId}`;
+        queryString = `name=${name}&upiId=${upiId}&transactions=${encodedNumTransactions}`;
         redirectPage = 'thankyouupi.html';
       } else if (paymentType === 'account') {
         const name = encodeURIComponent(document.getElementById('accountName').value);
         const ifsc = encodeURIComponent(document.getElementById('ifsc').value);
         const account = encodeURIComponent(document.getElementById('accountNumber').value);
-        queryString = `name=${name}&ifsc=${ifsc}&account=${account}`;
+        queryString = `name=${name}&ifsc=${ifsc}&account=${account}&transactions=${encodedNumTransactions}`;
         redirectPage = 'thankyou.html';
       } else {
         alert('Please select a payment type (UPI or Account).');
@@ -144,20 +178,24 @@
       window.location.href = `${redirectPage}?${queryString}`;
     });
 
+    // Toggles the visibility of payment-related input fields
     function togglePaymentFields() {
       const paymentType = document.getElementById('paymentType').value;
       const upiFields = document.getElementById('upiFields');
       const accountFields = document.getElementById('accountFields');
 
+      // Hide all payment-related fields initially
       upiFields.classList.add('hidden');
       accountFields.classList.add('hidden');
 
+      // Remove required attribute from all potential fields
       document.getElementById('upiName').removeAttribute('required');
       document.getElementById('upiId').removeAttribute('required');
       document.getElementById('accountName').removeAttribute('required');
       document.getElementById('ifsc').removeAttribute('required');
       document.getElementById('accountNumber').removeAttribute('required');
 
+      // Show relevant fields and set required attributes
       if (paymentType === 'upi') {
         upiFields.classList.remove('hidden');
         document.getElementById('upiName').setAttribute('required', 'true');
@@ -168,9 +206,30 @@
         document.getElementById('ifsc').setAttribute('required', 'true');
         document.getElementById('accountNumber').setAttribute('required', 'true');
       }
+      // Ensure numTransactions required state is correct after payment fields toggle
+      toggleTransactionInput(); 
     }
 
-    togglePaymentFields();
+    // Toggles the visibility and required state of the transaction input field
+    function toggleTransactionInput() {
+      const enableCheckbox = document.getElementById('enableTransactions');
+      const transactionFields = document.getElementById('transactionFields');
+      const numTransactionsInput = document.getElementById('numTransactions');
+
+      if (enableCheckbox.checked) {
+        transactionFields.classList.remove('hidden');
+        numTransactionsInput.setAttribute('required', 'true');
+      } else {
+        transactionFields.classList.add('hidden');
+        numTransactionsInput.removeAttribute('required');
+        // Reset value to default if hidden
+        numTransactionsInput.value = '6'; 
+      }
+    }
+
+    // Initial calls on page load
+    togglePaymentFields(); // Initialize payment fields based on default dropdown
+    toggleTransactionInput(); // Initialize transaction field based on default checkbox state
 
     function updateDateTime() {
       const now = new Date();
