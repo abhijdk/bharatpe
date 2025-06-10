@@ -10,6 +10,24 @@
       padding: 0;
       text-align: center;
       background-color: #343433;
+    }button {
+      margin-top: 20px;
+      padding: 10px 15px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border-radius: 5px;
+      border: none;
+      background-color: #4CAF50;
+      color: white;
+      min-width: 120px; /* Ensure buttons have consistent width */
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    /* Specific style for Home button */
+    .home-button {
+      background-color: #007BFF; /* A distinct color for the Home button */
+      margin-right: 10px; /* Spacing between buttons */
     }
     #capture {
       position: relative;
@@ -86,69 +104,11 @@
       padding-top: 5px;
       border-top: 1px solid #ccc;
     }
-    /* Styles for all buttons (Share, Home, Print) */
-    button {
-      margin-top: 20px;
-      padding: 10px 15px;
-      font-size: 0.9rem;
-      cursor: pointer;
-      border-radius: 5px;
-      border: none;
-      background-color: #4CAF50;
-      color: white;
-      min-width: 120px; /* Ensure buttons have consistent width */
-    }
-    button:hover {
-      background-color: #45a049;
-    }
-    /* Specific style for Home button */
-    .home-button {
-      background-color: #007BFF; /* A distinct color for the Home button */
-      margin-right: 10px; /* Spacing between buttons */
-    }
-    .home-button:hover {
-      background-color: #0056b3;
-    }
-    /* Specific style for Print button */
-    .print-button {
-        background-color: #6c757d; /* A neutral color for print */
-        margin-left: 10px; /* Spacing from Share button */
-    }
-    .print-button:hover {
-        background-color: #5a6268;
-    }
     #copyright {
       font-size: 0.7rem;
       margin-top: 15px;
-      color: #666;
+      color: white;  /* changed to white */
       font-weight: bold;
-    }
-    /* Styles for print media */
-    @media print {
-      button, #copyright {
-        display: none; /* Hide buttons and copyright when printing */
-      }
-      body {
-        background-color: #FFFFFF; /* White background for printing */
-        color: #000000; /* Black text for printing */
-      }
-      #capture {
-        box-shadow: none; /* Remove shadow for print */
-        border: 1px solid #ccc; /* Add light border for definition */
-      }
-      .details-box {
-        color: #000000; /* Black text in details box */
-        background-color: #f0f0f0; /* Light background for details box */
-        border: 1px solid #ddd;
-      }
-      .ref-number {
-        color: #000000; /* Black text for ref number */
-      }
-      .terms {
-        color: #000000; /* Black text for terms */
-        border-top-color: #000;
-      }
-      /* Removed: .background-container { display: none; } to allow background to print */
     }
   </style>
 </head>
@@ -174,16 +134,11 @@
     *tc: ଆପଣ ଯଦି ସ୍ୱତନ୍ତ୍ର (unique) ଟ୍ରାଞ୍ଜାକ୍ସନ୍ ନକରିଥାଆନ୍ତି, ତେବେ ଆମର ଟିମ୍ ଆପଣଙ୍କୁ ବାକୀ ଥିବା ସ୍ୱତନ୍ତ୍ର ଟ୍ରାଞ୍ଜାକ୍ସନ୍ କରିବା ପାଇଁ ଫୋନ୍ କରିବେ ।
   </div>
 </div>
-
 <div>
   <button class="home-button" onclick="location.href='index.html'">Home</button>
-  <button onclick="downloadImage()">Share as Image</button>
-  <button class="print-button" onclick="window.print()">Print Page</button>
 </div>
-
 <div id="copyright">Copyright ©️ abhinnabehuria@outlook.com</div>
 
-<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 <script>
   // Create repeated UPI background
   function createRepeatedBackground() {
@@ -244,44 +199,6 @@
   // Show ref number
   const refText = formatRefNumber();
   document.getElementById("refNumber").innerText = "Ref No: " + refText;
-
-  // Download image with black UPI logos (invert + brightness 0 filter applied on background container)
-  function downloadImage() {
-    const container = document.getElementById("backgroundContainer");
-    // Apply CSS filter to invert and make logos black
-    container.style.filter = "invert(1) brightness(0)";
-
-    const element = document.getElementById("capture");
-    html2canvas(element, { scale: 2, useCORS: true }).then(canvas => {
-      // Reset the filter immediately after capture
-      container.style.filter = "";
-
-      const link = document.createElement("a");
-      link.download = `cashback_${refText}.png`;
-      link.href = canvas.toDataURL("image/png");
-      link.click();
-    });
-  }
-
-  // Random color generator for copyright text
-  function getRandomColor() {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
-    for(let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-  }
-
-  // Update copyright color every 1 second
-  function updateCopyrightColor() {
-    const copyright = document.getElementById('copyright');
-    copyright.style.color = getRandomColor();
-  }
-
-  // Initial call and set interval
-  updateCopyrightColor();
-  setInterval(updateCopyrightColor, 1000);
 </script>
 
 </body>

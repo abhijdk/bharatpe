@@ -35,7 +35,7 @@
       display: flex;
       flex-wrap: wrap;
       opacity: 0.2;
-      overflow: hidden; 
+      overflow: hidden;
     }
     .background-container img {
       width: 50px;
@@ -64,17 +64,17 @@
       font-size: 0.8rem;
       background-color: #000000;
       box-shadow: 0 0 3px rgba(0,0,0,0.1);
-      text-align: left; 
+      text-align: left;
     }
     .details-box p {
-        margin: 5px 0; 
+        margin: 5px 0;
     }
     .ref-number {
       font-size: 0.75rem;
       color: #444;
       margin-bottom: 0.5rem;
       font-weight: bold;
-      text-align: center; 
+      text-align: center;
     }
     .terms {
       position: relative;
@@ -86,7 +86,6 @@
       padding-top: 5px;
       border-top: 1px solid #ccc;
     }
-    /* Styles for all buttons (Share, Home, Print) */
     button {
       margin-top: 20px;
       padding: 10px 15px;
@@ -96,26 +95,16 @@
       border: none;
       background-color: #4CAF50;
       color: white;
-      min-width: 120px; /* Ensure buttons have consistent width */
+      min-width: 120px;
     }
     button:hover {
       background-color: #45a049;
     }
-    /* Specific style for Home button */
     .home-button {
-      background-color: #007BFF; /* A distinct color for the Home button */
-      margin-right: 10px; /* Spacing between buttons */
+      background-color: #007BFF;
     }
     .home-button:hover {
       background-color: #0056b3;
-    }
-    /* Specific style for Print button */
-    .print-button {
-        background-color: #6c757d; /* A neutral color for print */
-        margin-left: 10px; /* Spacing from Share button */
-    }
-    .print-button:hover {
-        background-color: #5a6268;
     }
     #copyright {
       font-size: 0.7rem;
@@ -123,151 +112,111 @@
       color: #666;
       font-weight: bold;
     }
-    /* Styles for print media */
-    @media print {
-      button, #copyright {
-        display: none; /* Hide buttons and copyright when printing */
-      }
-      body {
-        background-color: #FFFFFF; /* White background for printing */
-        color: #000000; /* Black text for printing */
-      }
-      #capture {
-        box-shadow: none; /* Remove shadow for print */
-        border: 1px solid #ccc; /* Add light border for definition */
-      }
-      .details-box {
-        color: #000000; /* Black text in details box */
-        background-color: #f0f0f0; /* Light background for details box */
-        border: 1px solid #ddd;
-      }
-      .ref-number {
-        color: #000000; /* Black text for ref number */
-      }
-      .terms {
-        color: #000000; /* Black text for terms */
-        border-top-color: #000;
-      }
-      /* Removed: .background-container { display: none; } to allow background to print */
-    }
   </style>
 </head>
 <body>
 
-  <div id="capture">
-    <div class="background-container" id="backgroundContainer"></div>
+<div id="capture">
+  <div class="background-container" id="backgroundContainer"></div>
 
-    <div id="content">
-      <h1>🎉 Congratulation! You found ₹50 cashback</h1>
-      <h2>for doing <span id="transactionsDisplay">6</span> transactions</h2>
+  <div id="content">
+    <h1>🎉 Congratulation! You found ₹50 cashback</h1>
+    <h2>for doing <span id="transactionsDisplay">6</span> transactions</h2>
 
-      <div class="details-box">
-        <div class="ref-number" id="refNumber"></div>
-        <div class="details" id="userDetails"></div>
-      </div>
-    </div>
-
-    <div class="terms">
-      ଆମେ ଅନୁରୋଧ କରୁଛୁ ଯେ, ଯଦି ଆପଣ କ୍ୟାଶ୍‌ବ୍ୟାକ୍‌ ପାଇନାହାନ୍ତି, ତେବେ ଦୟାକରି <b>ଅଭିନ୍ନ (9437712047)</b> ଙ୍କ ସହିତ ଯୋଗାଯୋଗ କରନ୍ତୁ।<br>
-    </div>
-    <div class="terms">
-      *tc: ଆପଣ ଯଦି ସ୍ୱତନ୍ତ୍ର (unique) ଟ୍ରାଞ୍ଜାକ୍ସନ୍ ନକରିଥାଆନ୍ତି, ତେବେ ଆମର ଟିମ୍ ଆପଣଙ୍କୁ ବାକୀ ଥିବା ସ୍ୱତନ୍ତ୍ର ଟ୍ରାଞ୍ଜାକ୍ସନ୍ କରିବା ପାଇଁ ଫୋନ୍ କରିବେ ।
+    <div class="details-box">
+      <div class="ref-number" id="refNumber"></div>
+      <div class="details" id="userDetails"></div>
     </div>
   </div>
 
-  <div>
-    <button class="home-button" onclick="location.href='index.html'">Home</button>
-    <button onclick="downloadImage()">Share as Image</button>
-    <button class="print-button" onclick="window.print()">Print Page</button>
+  <div class="terms">
+    ଆମେ ଅନୁରୋଧ କରୁଛୁ ଯେ, ଯଦି ଆପଣ କ୍ୟାଶ୍‌ବ୍ୟାକ୍‌ ପାଇନାହାନ୍ତି, ତେବେ ଦୟାକରି <b>ଅଭିନ୍ନ (9437712047)</b> ଙ୍କ ସହିତ ଯୋଗାଯୋଗ କରନ୍ତୁ।<br>
   </div>
+  <div class="terms">
+    *tc: ଆପଣ ଯଦି ସ୍ୱତନ୍ତ୍ର (unique) ଟ୍ରାଞ୍ଜାକ୍ସନ୍ ନକରିଥାଆନ୍ତି, ତେବେ ଆମର ଟିମ୍ ଆପଣଙ୍କୁ ବାକୀ ଥିବା ସ୍ୱତନ୍ତ୍ର ଟ୍ରାଞ୍ଜାକ୍ସନ୍ କରିବା ପାଇଁ ଫୋନ୍ କରିବେ ।
+  </div>
+</div>
 
-  <div id="copyright">Copyright ©️ abhinnabehuria@outlook.com</div>
+<div>
+  <button class="home-button" onclick="location.href='index.html'">Home</button>
+</div>
 
-  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-  <script>
-    function createRepeatedBackground() {
-      const container = document.getElementById("backgroundContainer");
-      const imageSrc = "https://raw.githubusercontent.com/abhijdk/cashback/refs/heads/master/upilogo.jpg";
-      const containerWidth = container.offsetWidth;
-      const containerHeight = container.offsetHeight;
-      const imgSize = 50; 
-      const numRows = Math.ceil(containerHeight / imgSize);
-      const numCols = Math.ceil(containerWidth / imgSize);
+<div id="copyright">Copyright ©️ abhinnabehuria@outlook.com</div>
 
-      for (let i = 0; i < numRows * numCols; i++) {
-        const img = document.createElement("img");
-        img.src = imageSrc;
-        container.appendChild(img);
-      }
+<script>
+  function createRepeatedBackground() {
+    const container = document.getElementById("backgroundContainer");
+    const imageSrc = "https://raw.githubusercontent.com/abhijdk/cashback/refs/heads/master/upilogo.jpg";
+    const containerWidth = container.offsetWidth;
+    const containerHeight = container.offsetHeight;
+    const imgSize = 50;
+    const numRows = Math.ceil(containerHeight / imgSize);
+    const numCols = Math.ceil(containerWidth / imgSize);
+
+    for (let i = 0; i < numRows * numCols; i++) {
+      const img = document.createElement("img");
+      img.src = imageSrc;
+      container.appendChild(img);
     }
+  }
 
-    window.onload = createRepeatedBackground;
+  window.onload = createRepeatedBackground;
 
-    const params = new URLSearchParams(window.location.search);
-    const name = params.get("name");
-    const ifsc = params.get("ifsc");
-    const account = params.get("account");
-    const transactions = params.get("transactions");
+  const params = new URLSearchParams(window.location.search);
+  const name = params.get("name");
+  const ifsc = params.get("ifsc");
+  const account = params.get("account");
+  const transactions = params.get("transactions");
 
-    if (transactions) {
-      document.getElementById("transactionsDisplay").innerText = decodeURIComponent(transactions);
+  if (transactions) {
+    document.getElementById("transactionsDisplay").innerText = decodeURIComponent(transactions);
+  }
+
+  const userDetailsDiv = document.getElementById("userDetails");
+  let detailsHtml = '';
+
+  if (ifsc && account && name) {
+    detailsHtml = `
+      <p><strong>Name:</strong> ${decodeURIComponent(name)}</p>
+      <p><strong>IFSC:</strong> ${decodeURIComponent(ifsc)}</p>
+      <p><strong>Account:</strong> ${decodeURIComponent(account)}</p>
+    `;
+  } else {
+    detailsHtml = `<p>No account details provided.</p>`;
+  }
+  document.getElementById("userDetails").innerHTML = detailsHtml;
+
+  function formatRefNumber() {
+    const now = new Date();
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const year = now.getFullYear();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    return `${day}${month}${year}:${hours}${minutes}${seconds}`;
+  }
+
+  const refText = formatRefNumber();
+  document.getElementById("refNumber").innerText = "Ref No: " + refText;
+
+  function getRandomColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for(let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
     }
+    return color;
+  }
 
-    const userDetailsDiv = document.getElementById("userDetails");
-    let detailsHtml = '';
+  function updateCopyrightColor() {
+    const copyright = document.getElementById('copyright');
+    copyright.style.color = getRandomColor();
+  }
 
-    if (ifsc && account && name) {
-      detailsHtml = `
-        <p><strong>Name:</strong> ${decodeURIComponent(name)}</p>
-        <p><strong>IFSC:</strong> ${decodeURIComponent(ifsc)}</p>
-        <p><strong>Account:</strong> ${decodeURIComponent(account)}</p>
-      `;
-    } else {
-      detailsHtml = `<p>No account details provided.</p>`;
-    }
-    document.getElementById("userDetails").innerHTML = detailsHtml;
-
-    function formatRefNumber() {
-      const now = new Date();
-      const day = String(now.getDate()).padStart(2, '0');
-      const month = String(now.getMonth() + 1).padStart(2, '0');
-      const year = now.getFullYear();
-      const hours = String(now.getHours()).padStart(2, '0');
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-      const seconds = String(now.getSeconds()).padStart(2, '0');
-      return `${day}${month}${year}:${hours}${minutes}${seconds}`;
-    }
-
-    const refText = formatRefNumber();
-    document.getElementById("refNumber").innerText = "Ref No: " + refText;
-
-    function downloadImage() {
-      const element = document.getElementById("capture");
-      html2canvas(element, { scale: 2, useCORS: true }).then(canvas => {
-        const link = document.createElement("a");
-        link.download = `cashback_${refText}.png`;
-        link.href = canvas.toDataURL("image/png");
-        link.click();
-      });
-    }
-
-    function getRandomColor() {
-      const letters = '0123456789ABCDEF';
-      let color = '#';
-      for(let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-      }
-      return color;
-    }
-
-    function updateCopyrightColor() {
-      const copyright = document.getElementById('copyright');
-      copyright.style.color = getRandomColor();
-    }
-
-    updateCopyrightColor();
-    setInterval(updateCopyrightColor, 1000);
-  </script>
+  updateCopyrightColor();
+  setInterval(updateCopyrightColor, 1000);
+</script>
 
 </body>
 </html>
