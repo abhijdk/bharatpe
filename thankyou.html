@@ -86,7 +86,7 @@
       padding-top: 5px;
       border-top: 1px solid #ccc;
     }
-    /* Styles for all buttons (Share and Home) */
+    /* Styles for all buttons (Share, Home, Print) */
     button {
       margin-top: 20px;
       padding: 10px 15px;
@@ -101,7 +101,7 @@
     button:hover {
       background-color: #45a049;
     }
-    /* Specific style for Home button if needed, otherwise general button style applies */
+    /* Specific style for Home button */
     .home-button {
       background-color: #007BFF; /* A distinct color for the Home button */
       margin-right: 10px; /* Spacing between buttons */
@@ -109,11 +109,46 @@
     .home-button:hover {
       background-color: #0056b3;
     }
+    /* Specific style for Print button */
+    .print-button {
+        background-color: #6c757d; /* A neutral color for print */
+        margin-left: 10px; /* Spacing from Share button */
+    }
+    .print-button:hover {
+        background-color: #5a6268;
+    }
     #copyright {
       font-size: 0.7rem;
       margin-top: 15px;
       color: #666;
       font-weight: bold;
+    }
+    /* Styles for print media */
+    @media print {
+      button, #copyright {
+        display: none; /* Hide buttons and copyright when printing */
+      }
+      body {
+        background-color: #FFFFFF; /* White background for printing */
+        color: #000000; /* Black text for printing */
+      }
+      #capture {
+        box-shadow: none; /* Remove shadow for print */
+        border: 1px solid #ccc; /* Add light border for definition */
+      }
+      .details-box {
+        color: #000000; /* Black text in details box */
+        background-color: #f0f0f0; /* Light background for details box */
+        border: 1px solid #ddd;
+      }
+      .ref-number {
+        color: #000000; /* Black text for ref number */
+      }
+      .terms {
+        color: #000000; /* Black text for terms */
+        border-top-color: #000;
+      }
+      /* Removed: .background-container { display: none; } to allow background to print */
     }
   </style>
 </head>
@@ -124,7 +159,7 @@
 
     <div id="content">
       <h1>🎉 Congratulation! You found ₹50 cashback</h1>
-      <h2>for doing <span id="transactionsDisplay">6</span> transactions</h2> <!-- Updated to display transactions -->
+      <h2>for doing <span id="transactionsDisplay">6</span> transactions</h2>
 
       <div class="details-box">
         <div class="ref-number" id="refNumber"></div>
@@ -140,6 +175,7 @@
   <div>
     <button class="home-button" onclick="location.href='index.html'">Home</button>
     <button onclick="downloadImage()">Share as Image</button>
+    <button class="print-button" onclick="window.print()">Print Page</button>
   </div>
 
   <div id="copyright">Copyright ©️ abhinnabehuria@outlook.com</div>
@@ -168,9 +204,8 @@
     const name = params.get("name");
     const ifsc = params.get("ifsc");
     const account = params.get("account");
-    const transactions = params.get("transactions"); // Get transactions
+    const transactions = params.get("transactions");
 
-    // Display transactions count
     if (transactions) {
       document.getElementById("transactionsDisplay").innerText = decodeURIComponent(transactions);
     }
