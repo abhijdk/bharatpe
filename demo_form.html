@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Shop Details Form</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      background: #121212;
+      color: #eee;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container {
+      background: #222;
+      padding: 20px 25px;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 400px;
+      box-sizing: border-box;
+    }
+    h2 {
+      text-align: center;
+      color: #00cc99;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: none;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+    input[type="submit"] {
+      background-color: #00cc99;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 25px;
+      border: none;
+      transition: background-color 0.3s ease;
+    }
+    input[type="submit"]:hover {
+      background-color: #009977;
+    }
+    .error {
+      color: #ff6666;
+      margin-top: 10px;
+      font-weight: 600;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Shop Details Form</h2>
+    <form id="shopForm">
+      <label for="shopName">Shop Name:</label>
+      <input type="text" id="shopName" name="shopName" />
+
+      <label for="ownerName">Owner Name:</label>
+      <input type="text" id="ownerName" name="ownerName" />
+
+      <label for="mobile">Mobile Number:</label>
+      <input type="tel" id="mobile" name="mobile" pattern="[0-9]{10}" placeholder="10 digit number" />
+
+      <label for="location">Location:</label>
+      <textarea id="location" name="location" rows="3"></textarea>
+
+      <label for="passcode">Passcode:</label>
+      <input type="text" id="passcode" name="passcode" placeholder="Enter passcode" />
+
+      <input type="submit" value="Submit" />
+    </form>
+    <div id="errorMsg" class="error"></div>
+  </div>
+
+  <script>
+    function getTodayPasscode_ddmm() {
+      const now = new Date();
+      const dd = String(now.getDate()).padStart(2, '0');
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      return dd + mm;
+    }
+
+    function getCurrentPasscode_mmyy() {
+      const now = new Date();
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      const yy = String(now.getFullYear()).slice(2);
+      return mm + yy;
+    }
+
+    const form = document.getElementById('shopForm');
+    const errorMsg = document.getElementById('errorMsg');
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      errorMsg.textContent = '';
+
+      const one = form.passcode.value.trim();
+      const two = getTodayPasscode_ddmm();
+      const three = getCurrentPasscode_mmyy();
+
+      if (one === two) {
+        window.location.href = 'lead/lead_details.html';
+      } else if (one === three) {
+        window.location.href = 'fresh_onboarding/merchant_details.html';
+      } else {
+        window.location.href = 'page_not_available.html';
+      }
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Latest Lead Details</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      background: black;
+      color: #f2f2f2;
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 480px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    h1 {
+      background-color: #00cc99;
+      color: black;
+      text-align: center;
+      margin-bottom: 10px;
+      padding: 15px;
+      border-radius: 8px;
+      font-size: 1.3rem;
+    }
+
+    #datetime {
+      text-align: center;
+      font-size: 0.95rem;
+      color: #ccc;
+      margin-bottom: 20px;
+    }
+
+    .detail {
+      background: #222;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .label {
+      font-weight: 700;
+      color: #00cc99;
+    }
+
+    .value {
+      margin-left: 10px;
+    }
+
+    .nav-buttons {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .nav-buttons a {
+      display: inline-block;
+      width: 100%;
+      max-width: 100%;
+      background: #00cc99;
+      color: black;
+      padding: 15px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      box-sizing: border-box;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 0.85rem;
+      color: #888;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <h1>Merchant Details</h1>
+    <div id="datetime">Loading time...</div>
+
+    <div id="leadDetails"></div>
+
+    <div class="nav-buttons">
+      <a href="upload_qr.html">Upload Photo</a>
+    </div>
+
+    <footer>&copy; abhinnabehuria@outlook.com</footer>
+  </div>
+
+  <script>
+    // Live time display
+    function updateDateTime() {
+      const now = new Date();
+      const day = now.toLocaleDateString('en-US', { weekday: 'long' });
+      const date = now.toLocaleDateString('en-GB'); // DD/MM/YYYY
+      const time = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      document.getElementById('datetime').textContent = `📅 ${day} | 📆 ${date} | ⏰ ${time}`;
+    }
+
+    setInterval(updateDateTime, 1000);
+    updateDateTime();
+
+    // Load lead data from URL
+    function getQueryParams() {
+      const params = new URLSearchParams(window.location.search);
+      const obj = {};
+      for (const [key, value] of params.entries()) {
+        obj[key] = decodeURIComponent(value);
+      }
+      return obj;
+    }
+
+    const data = getQueryParams();
+    const container = document.getElementById('leadDetails');
+
+    if (Object.keys(data).length === 0) {
+      container.textContent = 'No data to display.';
+    } else {
+      container.innerHTML = `
+        <div class="detail"><span class="label">Shop Name:</span><span class="value">${data.shopName || ''}</span></div>
+        <div class="detail"><span class="label">Owner Name:</span><span class="value">${data.ownerName || ''}</span></div>
+        <div class="detail"><span class="label">Mobile:</span><span class="value">${data.mobile || ''}</span></div>
+        <div class="detail"><span class="label">Village:</span><span class="value">${data.village || ''}</span></div>
+        <div class="detail"><span class="label">Panchayat:</span><span class="value">${data.panchayat || ''}</span></div>
+        <div class="detail"><span class="label">Block:</span><span class="value">${data.block || ''}</span></div>
+        <div class="detail"><span class="label">District:</span><span class="value">${data.district || ''}</span></div>
+        <div class="detail"><span class="label">Pincode:</span><span class="value">${data.pincode || ''}</span></div>
+        <div class="detail"><span class="label">Landmark:</span><span class="value">${data.landmark || ''}</span></div>
+        <div class="detail"><span class="label">Description:</span><span class="value">${data.description || ''}</span></div>
+      `;
+    }
+  </script>
+
+</body>
+</html>

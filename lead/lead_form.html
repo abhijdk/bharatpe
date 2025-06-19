@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Lead Form</title>
+  <style>
+    body { background:black; color:#f2f2f2; font-family:sans-serif; max-width:480px; margin:auto; padding:20px;}
+    h1 { color:#00cc99; text-align:center; margin-bottom:20px; }
+    label { display:block; margin-top:15px; }
+    input, textarea {
+      width: 85%; background: #222; color: #f2f2f2; border:none; border-radius:6px; padding:10px; font-size:1rem;
+    }
+    textarea { min-height: 60px; resize: vertical; }
+    button {
+      margin-top: 20px; width: 100%; padding: 12px; background-color: #00cc99; border:none; border-radius:10px;
+      font-weight:700; font-size:1.1rem; cursor:pointer; color:black; transition: background-color 0.3s ease;
+    }
+    button:hover { background-color: #009977; }
+    .nav-buttons {
+      display: flex; justify-content: space-between; margin-top: 30px;
+    }
+    .nav-buttons a {
+      background: #00cc99; color: black; padding: 10px 15px;
+      border-radius: 8px; text-decoration: none; font-weight: bold;
+    }
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 0.85rem;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Lead Form</h1>
+
+  <form id="leadForm">
+    <label>Shop Name :
+      <input type="text" name="shopName" placeholder="optional" />
+    </label>
+    <label>Owner Name :
+      <input type="text" name="ownerName" placeholder="optional" />
+    </label>
+    <label>Mobile Number ):
+      <input type="number" name="mobile" required placeholder="10-digit number" />
+    </label>
+    <label>Village/Market:
+      <input type="text" name="village" required />
+    </label>
+    <label>Panchayat:
+      <input type="text" name="panchayat" required />
+    </label>
+    <label>Block:<br>
+      <input type="text" name="block" value="Tihidi" required />
+    </label>
+    <label>District:
+      <input type="text" name="district" value="Bhadrak" required />
+    </label>
+    <label>Pincode:
+      <input type="number" name="pincode" required placeholder="6-digit pincode" />
+    </label>
+    <label>Landmark :
+      <input type="text" name="landmark" placeholder="optional" />
+    </label>
+    <label>Description:
+      <textarea name="description" required placeholder="details of the shop"></textarea>
+    </label>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <div class="nav-buttons">
+    <a href="../index.html">Home</a>
+    <a href="lead_details.html">All Leads</a>
+  </div>
+
+  <footer>&copy; abhinnabehuria@outlook.com</footer>
+
+  <script>
+    const webAppUrl = 'https://script.google.com/macros/s/AKfycbxU_zn827hFvHLbJKuGYjfgAflnoRaJkmEZUlLJZLX3PJf7u9jkxLXhlZ573wtYg4KQLA/exec';
+
+    document.getElementById('leadForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const form = e.target;
+      const formData = new FormData(form);
+      const params = new URLSearchParams();
+
+      for (const pair of formData.entries()) {
+        params.append(pair[0], pair[1]);
+      }
+
+      fetch(webAppUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: params.toString()
+      })
+      .then(res => res.text())
+      .then(msg => {
+        alert(msg);
+        window.location.href = 'lead_data_recent.html?' + params.toString();
+      })
+      .catch(err => alert('Error: ' + err.message));
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>View Uploaded Photo</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 15px;
+      font-family: sans-serif;
+      text-align: center;
+      background: #000;
+      color: #fff;
+    }
+    h2 {
+      color: #00ffcc;
+    }
+    img {
+      width: 100%;
+      max-width: 100%;
+      border-radius: 10px;
+      margin-top: 15px;
+    }
+    .message {
+      color: #00ff00;
+      font-size: 1.2em;
+      margin-top: 10px;
+    }
+    .home-link {
+      display: inline-block;
+      margin-top: 25px;
+      font-size: 1em;
+      text-decoration: none;
+      color: #00ccff;
+      border: 1px solid #00ccff;
+      padding: 10px 15px;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Uploaded Photo</h2>
+  <div class="message">✅ Photo uploaded successfully!</div>
+  <div id="photoContainer"></div>
+  <a href="../index.html" class="home-link">🏠 Go to Home Page</a>
+
+  <script>
+    const url = localStorage.getItem("photoURL");
+    if (url) {
+      const img = document.createElement("img");
+      img.src = url;
+      img.alt = "Uploaded Photo";
+      document.getElementById("photoContainer").appendChild(img);
+    } else {
+      document.getElementById("photoContainer").innerText = "❌ No photo found.";
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>View Uploaded Photo</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 15px;
+      font-family: sans-serif;
+      text-align: center;
+      background: #000;
+      color: #fff;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+    h2 {
+      color: #00ffcc;
+      text-decoration: underline;
+      margin-bottom: 5px;
+      font-size: 1.6rem;
+    }
+    #datetime {
+      font-size: 1rem;
+      color: #ccc;
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+    img {
+      width: 100%;
+      max-width: 100%;
+      border-radius: 10px;
+      margin-top: 15px;
+      flex-shrink: 0;
+    }
+    .message {
+      color: #00ff00;
+      font-size: 1.2em;
+      margin-top: 10px;
+    }
+    .success-box {
+      background-color: rgba(0,0,0,0.75);
+      color: #00cc99;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 25px 0 5px; /* reduced bottom margin to tighten space */
+      font-weight: 600;
+      font-size: 1.1rem;
+      display: inline-block;
+      white-space: nowrap;
+    }
+    #secondsCount {
+      font-weight: 700;
+      color: #00ffcc;
+      font-family: monospace;
+    }
+    .home-link {
+      display: inline-block;
+      font-size: 1em;
+      text-decoration: none;
+      color: #00ccff;
+      border: 1px solid #00ccff;
+      padding: 10px 15px;
+      border-radius: 6px;
+      margin-top: 0; /* remove top margin */
+    }
+    footer {
+      margin-top: 25px;
+      font-size: 0.85rem;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <h2>Uploaded QR</h2>
+  <div id="datetime">Loading date & time...</div>
+  <div class="message">✅ QR uploaded successfully!</div>
+
+  <div id="photoContainer"></div>
+
+  <div class="success-box">
+    Merchant data submitted successfully!⏳ <span id="secondsCount">0</span> sec ago
+  </div>
+
+  <a href="../index.html" class="home-link">🏠 Go to Home Page</a>
+
+  <footer>© abhinnabehuria@outlook.com</footer>
+
+  <script>
+    // Show live date & time below heading
+    function updateDateTime() {
+      const now = new Date();
+      const day = now.toLocaleDateString('en-US', { weekday: 'long' });
+      const date = now.toLocaleDateString('en-GB'); // DD/MM/YYYY
+      const time = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      document.getElementById('datetime').textContent = `📅 ${day} | 📆 ${date} | ⏰ ${time}`;
+    }
+    setInterval(updateDateTime, 1000);
+    updateDateTime();
+
+    // Show uploaded photo if url present
+    const url = localStorage.getItem("photoURL");
+    const photoContainer = document.getElementById("photoContainer");
+    if (url) {
+      const img = document.createElement("img");
+      img.src = url;
+      img.alt = "Uploaded Photo";
+      photoContainer.appendChild(img);
+    } else {
+      photoContainer.textContent = "❌ No photo found.";
+    }
+
+    // Seconds counter for success box
+    let seconds = 0;
+    const secondsCount = document.getElementById('secondsCount');
+    setInterval(() => {
+      seconds++;
+      secondsCount.textContent = seconds;
+    }, 1000);
+  </script>
+</body>
+</html>

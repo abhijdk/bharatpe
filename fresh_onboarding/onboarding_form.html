@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Merchant Onboarding Form</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      background: black;
+      color: #f2f2f2;
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 480px;
+      margin: auto;
+      padding: 20px;
+    }
+
+    h1 {
+      background-color: #00cc99;
+      color: black;
+      text-align: center;
+      margin-bottom: 10px;
+      padding: 15px;
+      border-radius: 8px;
+      font-size: 1.3rem;
+    }
+
+    #datetime {
+      text-align: center;
+      font-size: 0.95rem;
+      color: #ccc;
+      margin-bottom: 20px;
+    }
+
+    form label {
+      display: block;
+      margin-top: 15px;
+    }
+
+    input, textarea {
+      width: 100%;
+      background: #222;
+      color: #f2f2f2;
+      border: none;
+      border-radius: 6px;
+      padding: 10px;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      min-height: 60px;
+      resize: vertical;
+    }
+
+    button {
+      margin-top: 25px;
+      width: 100%;
+      padding: 15px;
+      background-color: #00cc99;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      cursor: pointer;
+      color: black;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #009977;
+    }
+
+    #loading {
+      display: none;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .spinner {
+      margin: 10px auto;
+      border: 4px solid #ccc;
+      border-top: 4px solid #00cc99;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 0.85rem;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>New Merchant Onboarding</h1>
+    <div id="datetime">Loading date & time...</div>
+
+    <form id="leadForm">
+      <label>Shop Name :
+        <input type="text" name="shopName" placeholder="optional" />
+      </label>
+      <label>Owner Name :
+        <input type="text" name="ownerName" placeholder="optional" />
+      </label>
+      <label>Mobile Number :
+        <input type="number" name="mobile" required placeholder="10-digit number" />
+      </label>
+      <label>Village/Market:
+        <input type="text" name="village" required />
+      </label>
+      <label>Panchayat/Municipality:
+        <input type="text" name="panchayat" required />
+      </label>
+      <label>Block:
+        <input type="text" name="block" value="Tihidi" required />
+      </label>
+      <label>District:
+        <input type="text" name="district" value="Bhadrak" required />
+      </label>
+      <label>Pincode:
+        <input type="number" name="pincode" required placeholder="6-digit pincode" />
+      </label>
+      <label>Landmark :
+        <input type="text" name="landmark" placeholder="optional" />
+      </label>
+      <label>Description:
+        <textarea name="description" required placeholder="details of the shop"></textarea>
+      </label>
+
+      <button type="submit" id="submitBtn">Submit</button>
+      <div id="loading">
+        <span>⏳ Please wait...</span>
+        <div class="spinner"></div>
+      </div>
+    </form>
+
+    <footer>&copy; abhinnabehuria@outlook.com</footer>
+  </div>
+
+  <script>
+    const webAppUrl = 'https://script.google.com/macros/s/AKfycbxxqplLtUWRyK3LNvfwDmP5SUc3Z_UpxAIOcaWsjkARHeCCHJ0xHy9F73F7sjE9BbB_/exec';
+
+    document.getElementById('leadForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      // Hide the submit button, show loading
+      document.getElementById('submitBtn').style.display = 'none';
+      document.getElementById('loading').style.display = 'block';
+
+      const form = e.target;
+      const formData = new FormData(form);
+      const params = new URLSearchParams();
+
+      for (const pair of formData.entries()) {
+        params.append(pair[0], pair[1]);
+      }
+
+      fetch(webAppUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: params.toString()
+      })
+      .then(res => res.text())
+      .then(msg => {
+        alert(msg);
+        window.location.href = 'onboaded_data_recent.html?' + params.toString();
+      })
+      .catch(err => {
+        alert('Error: ' + err.message);
+        // Re-show button on error
+        document.getElementById('submitBtn').style.display = 'block';
+        document.getElementById('loading').style.display = 'none';
+      });
+    });
+
+    // Live Date-Time Display
+    function updateDateTime() {
+      const now = new Date();
+      const day = now.toLocaleDateString('en-US', { weekday: 'long' });
+      const date = now.toLocaleDateString('en-GB'); // DD/MM/YYYY
+      const time = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      document.getElementById('datetime').textContent = `📅 ${day} | 📆 ${date} | ⏰ ${time}`;
+    }
+
+    setInterval(updateDateTime, 1000);
+    updateDateTime();
+  </script>
+
+</body>
+</html>

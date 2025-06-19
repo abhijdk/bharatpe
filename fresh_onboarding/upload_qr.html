@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Upload JPG Photo</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: sans-serif;
+      background-color: #000;
+      color: #fff;
+      text-align: center;
+    }
+
+    h2 {
+      color: #00ffcc;
+      margin-bottom: 10px;
+    }
+
+    #datetime {
+      font-size: 0.95rem;
+      color: #ccc;
+      margin-bottom: 25px;
+    }
+
+    input[type="file"] {
+      padding: 10px;
+      background-color: #222;
+      color: #fff;
+      border: 1px solid #444;
+      border-radius: 6px;
+      width: 90%;
+      max-width: 300px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 12px 30px;
+      font-size: 1rem;
+      background-color: #00ccff;
+      border: none;
+      border-radius: 6px;
+      color: black;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #00b3e6;
+    }
+
+    #loading {
+      margin-top: 20px;
+      font-size: 1rem;
+      color: #00ccff;
+      display: none;
+    }
+
+    .dots::after {
+      content: '';
+      animation: dots 1.2s steps(4, end) infinite;
+    }
+
+    @keyframes dots {
+      0% { content: ''; }
+      25% { content: '.'; }
+      50% { content: '..'; }
+      75% { content: '...'; }
+      100% { content: ''; }
+    }
+
+    #message {
+      margin-top: 20px;
+      font-size: 1em;
+      color: #ff6666;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Upload JPG QR</h2>
+  <div id="datetime">Loading date & time...</div>
+  <h4>Loading owner name...</h4>
+
+  <form id="photoForm">
+    <input type="file" id="photoInput" accept=".jpg,.jpeg" required><br>
+    <button type="submit" id="submitBtn">Upload</button>
+    <div id="loading">⏳ Please wait<span class="dots"></span></div>
+  </form>
+
+  <p id="message"></p>
+
+  <script>
+    // Show live day-date-time
+    function updateDateTime() {
+      const now = new Date();
+      const day = now.toLocaleDateString('en-US', { weekday: 'long' });
+      const date = now.toLocaleDateString('en-GB'); // DD/MM/YYYY
+      const time = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      document.getElementById('datetime').textContent = `📅 ${day} | 📆 ${date} | ⏰ ${time}`;
+    }
+
+    setInterval(updateDateTime, 1000);
+    updateDateTime();
+
+    // Form upload logic
+    const form = document.getElementById("photoForm");
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const fileInput = document.getElementById("photoInput");
+      const file = fileInput.files[0];
+      const btn = document.getElementById("submitBtn");
+      const loader = document.getElementById("loading");
+
+      if (!file || !file.type.includes("jpeg")) {
+        alert("Only JPG allowed.");
+        return;
+      }
+
+      // Show loading, hide button
+      btn.style.display = "none";
+      loader.style.display = "block";
+
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const base64 = reader.result.split(',')[1];
+        const payload = {
+          photo: base64,
+          mimeType: file.type,
+          fileName: file.name
+        };
+
+        try {
+          const response = await fetch("https://script.google.com/macros/s/AKfycbyyFdgAGuRYzXep0J7Fjm9JX5QsgQrjSaQYSQC8GlUUQt-0H94U_an0GmsEI66d2RrPkQ/exec", {
+            method: "POST",
+            body: JSON.stringify(payload)
+          });
+
+          const data = await response.json();
+          if (data.url) {
+            localStorage.setItem("photoURL", data.url);
+            window.location.href = "view_qr.html";
+          } else {
+            document.getElementById("message").innerText = "Upload failed: " + JSON.stringify(data);
+            btn.style.display = "inline-block";
+            loader.style.display = "none";
+          }
+        } catch (err) {
+          document.getElementById("message").innerText = "Error: " + err.message;
+          btn.style.display = "inline-block";
+          loader.style.display = "none";
+        }
+      };
+
+      reader.readAsDataURL(file);
+    });
+  </script>
+</body>
+</html>
+	

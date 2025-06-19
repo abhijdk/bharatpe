@@ -1,42 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Cashback Portal - Home</title>
-    <style>
-        body {
-          background-color: #1e1e1e;
-          font-family: Arial, sans-serif;
-          color: white;
-          text-align: center;
-          padding-top: 100px;
-        }
-        h1 {
-          color: #00ff99;
-          margin-bottom: 40px;
-        }
-        a {
-          display: inline-block;
-          margin: 20px;
-          padding: 15px 30px;
-          font-size: 1rem;
-          text-decoration: none;
-          background-color: #007BFF;
-          color: white;
-          border-radius: 8px;
-          transition: background-color 0.3s ease;
-        }
-        a:hover {
-          background-color: #0056b3;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Cashback Portal - Home</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      background-color: #1e1e1e;
+      font-family: Arial, sans-serif;
+      color: white;
+      text-align: center;
+      padding: 40px 10px;
+    }
+    h1 {
+      color: #00ff99;
+      margin-bottom: 10px;
+    }
+    #date, #day, #time {
+      color: #cccccc;
+      font-size: 1rem;
+      margin: 3px 0;
+    }
+    a {
+      display: block;
+      margin: 15px auto;
+      padding: 15px;
+      width: 90%;
+      max-width: 400px;
+      font-size: 1rem;
+      text-decoration: none;
+      background-color: #007BFF;
+      color: white;
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+    }
+    a:hover {
+      background-color: #0056b3;
+    }
+    footer {
+      margin-top: 40px;
+      font-size: 0.9rem;
+      color: #888888;
+    }
+  </style>
 </head>
 <body>
 
-<h1>🎉 Welcome to the Cashback Portal</h1>
+  <h1>🎉 Welcome to BharatPe</h1>
+  <div id="day">Loading...</div>
+  <div id="date">Loading...</div>
+  <div id="time">Loading...</div>
 
-<a href="payment/cashbackForm.html">💸 Fill Cashback Form</a>
-<a href="welCome/welComeForm.html">👋 Welcome Form</a>
+  <a href="fresh_onboarding/onboarding_form.html">🆕 Fresh Onboarding</a>
+  <a href="lead/lead_form.html">📋 Add Lead</a>
+  <a href="payment/cashbackForm.html">💸 Fill Cashback Form</a>
+  <a href="demo_form.html">📑 Demo Form</a>
+
+  <footer>© 2025 abhinnabehuria@outlook.com</footer>
+
+  <script>
+    function updateDateTime() {
+      const now = new Date();
+      const day = now.toLocaleDateString('en-US', { weekday: 'long' });
+      const date = now.toLocaleDateString('en-GB'); // format: DD/MM/YYYY
+      const time = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+      document.getElementById('day').textContent = `📅 Day: ${day}`;
+      document.getElementById('date').textContent = `📆 Date: ${date}`;
+      document.getElementById('time').textContent = `⏰ Time: ${time}`;
+    }
+
+    setInterval(updateDateTime, 1000); // refresh every second
+    updateDateTime(); // initial call
+  </script>
 
 </body>
 </html>

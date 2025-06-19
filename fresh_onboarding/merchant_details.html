@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Merchant Details</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      background: black;
+      color: #f2f2f2;
+      font-family: sans-serif;
+      max-width: 900px;
+      margin: auto;
+      padding: 20px;
+    }
+    h1 {
+      color: #00cc99;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+    }
+    th, td {
+      border: 1px solid #333;
+      padding: 8px;
+      text-align: left;
+      font-size: 0.9rem;
+      vertical-align: middle;
+    }
+    th {
+      background-color: #222;
+    }
+    tr:nth-child(even) {
+      background-color: #1a1a1a;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Merchant Details</h1>
+
+  <table id="leadsTable">
+    <thead>
+      <tr>
+        <th>Timestamp</th>
+        <th>Shop Name</th>
+        <th>Owner Name</th>
+        <th>Mobile</th>
+        <th>Village</th>
+        <th>Panchayat</th>
+        <th>Block</th>
+        <th>District</th>
+        <th>Pincode</th>
+        <th>Landmark</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="11" style="text-align:center;">Loading...</td></tr>
+    </tbody>
+  </table>
+
+  <script>
+    const webAppUrl = 'https://script.google.com/macros/s/AKfycbxxqplLtUWRyK3LNvfwDmP5SUc3Z_UpxAIOcaWsjkARHeCCHJ0xHy9F73F7sjE9BbB_/exec';
+
+    fetch(webAppUrl)
+      .then(res => res.json())
+      .then(data => {
+        const tbody = document.querySelector('#leadsTable tbody');
+        tbody.innerHTML = "";
+
+        if (data.error) {
+          tbody.innerHTML = `<tr><td colspan="11" style="color:red; text-align:center;">Error: ${data.error}</td></tr>`;
+          return;
+        }
+
+        data.forEach(row => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${row['Timestamp'] || ''}</td>
+            <td>${row['Shop Name'] || ''}</td>
+            <td>${row['Owner Name'] || ''}</td>
+            <td>${row['Mobile'] || ''}</td>
+            <td>${row['Village'] || ''}</td>
+            <td>${row['Panchayat'] || ''}</td>
+            <td>${row['Block'] || ''}</td>
+            <td>${row['District'] || ''}</td>
+            <td>${row['Pincode'] || ''}</td>
+            <td>${row['Landmark'] || ''}</td>
+            <td>${row['Description'] || ''}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      })
+      .catch(err => {
+        const tbody = document.querySelector('#leadsTable tbody');
+        tbody.innerHTML = `<tr><td colspan="11" style="color:red; text-align:center;">Failed to load data</td></tr>`;
+        console.error(err);
+      });
+
+    // Auto-close page after 5 seconds of inactivity
+    let inactivityTimer;
+
+    function startInactivityTimer() {
+      clearTimeout(inactivityTimer);
+      inactivityTimer = setTimeout(() => {
+        window.close(); // Close only if opened via window.open()
+      }, 5000); // 5 seconds
+    }
+
+    ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'].forEach(event =>
+      document.addEventListener(event, startInactivityTimer)
+    );
+
+    startInactivityTimer(); // Start timer on load
+  </script>
+
+</body>
+</html>
