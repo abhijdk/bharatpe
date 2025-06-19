@@ -16,7 +16,7 @@
       color: #00ff99;
       margin-bottom: 10px;
     }
-    #date, #day, #time {
+    #day, #date, #time {
       color: #cccccc;
       font-size: 1rem;
       margin: 3px 0;
@@ -42,6 +42,50 @@
       font-size: 0.9rem;
       color: #888888;
     }
+    /* Welcome form styles */
+    #welcomeForm {
+      margin: 25px auto;
+      max-width: 400px;
+      text-align: left;
+      background-color: #222;
+      padding: 20px;
+      border-radius: 10px;
+    }
+    #welcomeForm label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #00ff99;
+    }
+    #welcomeForm input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      font-size: 1rem;
+      margin-bottom: 15px;
+    }
+    #welcomeForm button {
+      width: 100%;
+      padding: 12px;
+      background-color: #00ff99;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      color: #000;
+      transition: background-color 0.3s ease;
+    }
+    #welcomeForm button:hover {
+      background-color: #00cc7a;
+    }
+    #welcomeMessage {
+      margin-top: 15px;
+      font-size: 1.2rem;
+      color: #00ff99;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -51,10 +95,23 @@
   <div id="date">Loading...</div>
   <div id="time">Loading...</div>
 
+  <!-- Welcome Form -->
+  <form id="welcomeForm">
+    <label for="userName">Enter Your Name to Get Started:</label>
+    <input type="text" id="userName" placeholder="Your name" required />
+    <button type="submit">Submit</button>
+    <div id="welcomeMessage"></div>
+  </form>
+
   <a href="fresh_onboarding/onboarding_form.html">🆕 Fresh Onboarding</a>
   <a href="lead/lead_form.html">📋 Add Lead</a>
   <a href="payment/cashbackForm.html">💸 Fill Cashback Form</a>
   <a href="demo_form.html">📑 Demo Form</a>
+  <a href="welCome/welComeForm.html">👋 WelCome Form</a>
+
+  <!-- New links that open in new tabs -->
+  <a href="https://chatgpt.com//" target="_blank" rel="noopener noreferrer">🤖 ChatGPT</a>
+  <a href="https://www.google.com/" target="_blank" rel="noopener noreferrer">🔎 Google</a>
 
   <footer>© 2025 abhinnabehuria@outlook.com</footer>
 
@@ -72,6 +129,21 @@
 
     setInterval(updateDateTime, 1000); // refresh every second
     updateDateTime(); // initial call
+
+    // Welcome form submit handler
+    document.getElementById('welcomeForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const userName = document.getElementById('userName').value.trim();
+      const messageDiv = document.getElementById('welcomeMessage');
+
+      if (userName) {
+        messageDiv.textContent = `👋 Hello, ${userName}! Welcome to BharatPe.`;
+        this.reset();
+      } else {
+        messageDiv.textContent = '';
+      }
+    });
   </script>
 
 </body>
