@@ -36,6 +36,27 @@
     tr:nth-child(even) {
       background-color: #1a1a1a;
     }
+    /* Home button styles */
+    .home-button {
+      display: block;
+      width: 120px;
+      margin: 0 auto;
+      padding: 10px 0;
+      background-color: #00cc99;
+      color: black;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-align: center;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+    .home-button:hover {
+      background-color: #009966;
+      color: white;
+    }
   </style>
 </head>
 <body>
@@ -62,6 +83,9 @@
       <tr><td colspan="11" style="text-align:center;">Loading...</td></tr>
     </tbody>
   </table>
+
+  <!-- Home Button -->
+  <a href="../index.html" class="home-button">Home</a>
 
   <script>
     const webAppUrl = 'https://script.google.com/macros/s/AKfycbxxqplLtUWRyK3LNvfwDmP5SUc3Z_UpxAIOcaWsjkARHeCCHJ0xHy9F73F7sjE9BbB_/exec';
